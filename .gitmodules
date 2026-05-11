@@ -1,3 +1,6 @@
 [submodule ".vendor/anthropic-skills"]
 	path = .vendor/anthropic-skills
 	url = https://github.com/anthropics/skills
+[submodule ".vendor/addyosmani-agent-skills"]
+	path = .vendor/addyosmani-agent-skills
+	url = https://github.com/addyosmani/agent-skills
