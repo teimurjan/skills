@@ -4,3 +4,6 @@
 [submodule ".vendor/addyosmani-agent-skills"]
 	path = .vendor/addyosmani-agent-skills
 	url = https://github.com/addyosmani/agent-skills
+[submodule ".vendor/freshtechbro-claudedesignskills"]
+	path = .vendor/freshtechbro-claudedesignskills
+	url = https://github.com/freshtechbro/claudedesignskills
