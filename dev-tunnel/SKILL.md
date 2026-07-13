@@ -54,13 +54,13 @@ If multiple lockfiles exist, prefer the most recently modified one — that's ty
 
 ## Step 3 — Start the dev server in the background
 
-Use `Bash` with `run_in_background: true`. Capture the bash shell ID — you'll need it to read output and to kill it later.
+Start the selected command as a background shell session using the agent's available long-running command mechanism. Capture the session/process identifier — you'll need it to read output and to stop the server later.
 
 Important: do NOT block on the dev server. It's a long-running process and won't exit on its own.
 
 ## Step 4 — Find the port
 
-Use `BashOutput` to read the dev server's stdout. Most JS dev tools print the port within ~5 seconds. Look for one of these patterns:
+Poll the dev server session's stdout. Most JS dev tools print the port within ~5 seconds. Look for one of these patterns:
 
 - `Local:   http://localhost:5173/` (Vite)
 - `localhost:3000` (Next, CRA, Express)
@@ -68,7 +68,7 @@ Use `BashOutput` to read the dev server's stdout. Most JS dev tools print the po
 - `On Your Network:  http://192.168.x.x:8080` (CRA-style)
 
 Strategy:
-1. Wait briefly (2–4s), then call `BashOutput` on the dev-server shell.
+1. Wait briefly (2–4s), then read recent output from the dev-server session.
 2. Regex the output for `localhost:(\d+)` or `:(\d{4,5})\b` after a "Local"/"Listening"/"running" cue.
 3. If nothing yet, wait another 3s and re-read. Try this up to ~3 times (total ~10s).
 4. If still nothing, fall back: `lsof -iTCP -sTCP:LISTEN -P -n | grep -E 'node|bun|deno'` and pick the highest-numbered port that wasn't already in use before starting. As a last resort, ask the user.
@@ -87,7 +87,7 @@ The `--host-header=rewrite` flag rewrites the `Host` header to match the upstrea
 
 `--log=stdout` makes the output captureable; without it ngrok's TUI swallows everything.
 
-Capture the bash shell ID for ngrok separately from the dev server's.
+Capture the background session/process identifier for ngrok separately from the dev server's.
 
 ## Step 6 — Fetch the public URL
 
@@ -97,7 +97,7 @@ ngrok exposes a local API at `http://localhost:4040/api/tunnels`. Wait ~2s after
 curl -s http://localhost:4040/api/tunnels | python3 -c 'import sys,json; print(json.load(sys.stdin)["tunnels"][0]["public_url"])'
 ```
 
-If the API isn't up yet, wait another 2s and retry (up to ~3 times). If it never responds, read `BashOutput` from the ngrok shell — startup errors (auth issues, port conflicts) show up there.
+If the API isn't up yet, wait another 2s and retry (up to ~3 times). If it never responds, read recent output from the ngrok session — startup errors (auth issues, port conflicts) show up there.
 
 ## Step 7 — Report the URL
 
@@ -107,7 +107,7 @@ Print the URL in a way that's easy to spot on a phone screen. Plain and prominen
 Public URL: https://abcd-1234.ngrok-free.app
   → forwarding to localhost:5173 (vite)
 
-To stop: kill background shells <dev-shell-id> and <ngrok-shell-id>,
+To stop: kill background sessions <dev-session-id> and <ngrok-session-id>,
 or run `pkill -f ngrok` and stop the dev server shell.
 ```
 
