@@ -1,6 +1,6 @@
 # agent-skills
 
-Portable skills for code agents that understand the `SKILL.md` skill format, including Codex and Claude Code.
+Portable skills for code agents that understand the `SKILL.md` skill format, including OMP, Codex, and Claude Code.
 
 Each skill is a directory with a `SKILL.md` file containing YAML frontmatter and Markdown instructions. The `description` field controls when an agent should load the skill.
 
@@ -49,12 +49,14 @@ Sync only one agent:
 ```sh
 scripts/install.sh --agent codex
 scripts/install.sh --agent claude
+scripts/install.sh --agent omp
 ```
 
 The script creates symlinks in:
 
 - Codex: `~/.codex/skills/<skill-name>`
 - Claude Code: `~/.claude/skills/<skill-name>`
+- OMP: `~/.omp/agent/skills/<skill-name>`
 
 It will not overwrite real files or directories in those locations. If vendored skill symlinks are broken, initialize submodules with `git submodule update --init --recursive` and rerun the script.
 

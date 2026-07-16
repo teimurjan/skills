@@ -3,13 +3,14 @@ set -eu
 
 usage() {
   cat <<'USAGE'
-Usage: scripts/install.sh [--agent codex|claude|both]
+Usage: scripts/install.sh [--agent codex|claude|omp|both]
 
 Links top-level skill directories from this repo into local agent skill directories.
 
 Targets:
   codex   ~/.codex/skills
   claude  ~/.claude/skills
+  omp     ~/.omp/agent/skills
   both    both targets (default)
 USAGE
 }
@@ -20,7 +21,7 @@ while [ "$#" -gt 0 ]; do
   case "$1" in
     --agent)
       if [ "$#" -lt 2 ]; then
-        echo "error: --agent requires codex, claude, or both" >&2
+        echo "error: --agent requires codex, claude, omp, or both" >&2
         exit 2
       fi
       agent="$2"
@@ -39,9 +40,9 @@ while [ "$#" -gt 0 ]; do
 done
 
 case "$agent" in
-  codex|claude|both) ;;
+  codex|claude|omp|both) ;;
   *)
-    echo "error: --agent must be codex, claude, or both" >&2
+    echo "error: --agent must be codex, claude, omp, or both" >&2
     exit 2
     ;;
 esac
@@ -56,6 +57,9 @@ case "$agent" in
     ;;
   claude)
     targets+=("$HOME/.claude/skills")
+    ;;
+  omp)
+    targets+=("$HOME/.omp/agent/skills")
     ;;
   both)
     targets+=("$HOME/.codex/skills" "$HOME/.claude/skills")
