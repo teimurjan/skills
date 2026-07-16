@@ -7,3 +7,6 @@
 [submodule ".vendor/freshtechbro-claudedesignskills"]
 	path = .vendor/freshtechbro-claudedesignskills
 	url = https://github.com/freshtechbro/claudedesignskills
+[submodule ".vendor/nutlope-hallmark"]
+	path = .vendor/nutlope-hallmark
+	url = https://github.com/Nutlope/hallmark

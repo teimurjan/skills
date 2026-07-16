@@ -4,7 +4,7 @@
 
 // Originally from https://github.com/snqb/my-skills/blob/main/browser-testing/SKILL.md
 
-import { decodeBase64 } from "jsr:@std/encoding@^1/base64";
+import { decodeBase64 } from "jsr:@std/encoding@^1.0.11/base64";
 
 const API = "http://localhost:8222/api/v1";
 const HOME = Deno.env.get("HOME") || "/tmp";
@@ -432,8 +432,8 @@ async function run() {
         { gfm },
       ] = await Promise.all([
         import("npm:@mozilla/readability@^0.6.0"),
-        import("npm:jsdom@^27.0.1"),
-        import("npm:turndown@^7.2.2"),
+        import("npm:jsdom@^29.1.1"),
+        import("npm:turndown@^7.2.4"),
         import("npm:turndown-plugin-gfm@^1.0.2"),
       ]);
       const doc = new JSDOM(html, { url: finalUrl });

@@ -1,0 +1,57 @@
+{
+  "skill_name": "ux-laws-audit",
+  "evals": [
+    {
+      "id": 0,
+      "name": "hn-frontpage-single-screen",
+      "prompt": "Can you review the UX of the Hacker News front page (https://news.ycombinator.com/)? I want to know what usability problems it has and how to fix them.",
+      "expected_output": "A markdown UX audit file. Findings tied to specific named Laws of UX with visible evidence from the actual HN page (e.g. tiny tap targets / thin links -> Fitts's Law, dense undifferentiated rows -> Chunking/Proximity). Each finding has severity, effort, and a concrete fix. Ends with an impact-ranked action plan.",
+      "files": [],
+      "expectations": [
+        "A markdown report file was created in the run's outputs directory.",
+        "Findings cite at least 3 distinct, correctly-named Laws of UX.",
+        "Every finding carries a severity label (Critical / Major / Minor).",
+        "Every finding carries an implementation-effort label (S / M / L).",
+        "The report ends with a prioritized action plan or checklist ordered by impact vs. effort.",
+        "Each finding includes a concrete, specific fix that names what to change, not a restatement of the problem.",
+        "Findings are grounded in specific observed elements of the actual page, not generic UX advice.",
+        "At least one finding addresses HN's actual small or densely packed interactive targets and ties it to Fitts's Law and/or Proximity/Chunking."
+      ]
+    },
+    {
+      "id": 1,
+      "name": "saucedemo-checkout-flow",
+      "prompt": "Audit the UX of the shopping + checkout flow on https://www.saucedemo.com/ (log in with the standard_user / secret_sauce credentials shown on the login page, add an item to the cart, and go through checkout). Where does the flow fall down and what should we fix first?",
+      "expected_output": "A markdown UX audit covering multiple screens (login, inventory, cart, checkout steps, confirmation). Per-screen findings tied to named laws with evidence, plus cross-flow observations. Prioritized action plan.",
+      "files": [],
+      "expectations": [
+        "A markdown report file was created in the run's outputs directory.",
+        "Findings cite at least 3 distinct, correctly-named Laws of UX.",
+        "Every finding carries a severity label (Critical / Major / Minor).",
+        "Every finding carries an implementation-effort label (S / M / L).",
+        "The report ends with a prioritized action plan or checklist ordered by impact vs. effort.",
+        "Each finding includes a concrete, specific fix that names what to change, not a restatement of the problem.",
+        "Findings are grounded in specific observed elements of the actual flow, not generic UX advice.",
+        "The audit covers multiple distinct screens of the flow.",
+        "The report includes at least one cross-flow observation spanning screens (e.g. checkout progress tied to Goal-Gradient/Zeigarnik, or the confirmation/end moment tied to Peak-End Rule)."
+      ]
+    },
+    {
+      "id": 2,
+      "name": "govuk-mobile-restraint",
+      "prompt": "Give the GOV.UK homepage (https://www.gov.uk/) a mobile UX audit against UX best practices, as if viewed on a phone. It's a pretty well-regarded site so I mostly want to know if there's anything genuinely worth fixing.",
+      "expected_output": "A markdown UX audit captured at a mobile viewport. Because GOV.UK is a strong UI, a good result shows RESTRAINT: few findings, honest severities, an explicit 'what's working' acknowledgement, and no invented/padded problems. Any findings cite named laws with real evidence.",
+      "files": [],
+      "expectations": [
+        "A markdown report file was created in the run's outputs directory.",
+        "The audit was performed at a mobile/phone viewport.",
+        "Findings cite correctly-named Laws of UX with real evidence.",
+        "Every finding carries a severity label and an effort label.",
+        "The report ends with a prioritized action plan or checklist.",
+        "Each finding includes a concrete, specific fix, not a restatement of the problem.",
+        "The report shows restraint appropriate to a strong UI: it acknowledges what works and does not fabricate Critical-severity problems without visible evidence.",
+        "The number of findings is modest and proportionate; the report is not padded with invented or trivial issues."
+      ]
+    }
+  ]
+}
