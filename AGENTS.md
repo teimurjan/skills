@@ -36,4 +36,6 @@ scripts/install.sh --agent both
 
 - `browser-testing` includes a Deno CLI wrapper in `browser.js`.
 - `address-pr-review`, `dev-tunnel`, and `perf-engineering` are markdown-only skills.
+- `ux-laws-audit` is a markdown skill (no runtime code) with a `references/` Laws-of-UX checklist and an `assets/` report template.
+- `hallmark` is a vendored design skill symlinked from `.vendor/`; update it via its submodule rather than editing in place.
 - There is no project-wide build step, test suite, or linter.
