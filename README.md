@@ -16,11 +16,8 @@ Authored here:
 
 Vendored as submodules in `.vendor/` and symlinked at the repo root:
 
-- **code-simplification**, **idea-refine** - addyosmani/agent-skills
 - **skill-creator** - anthropics/skills
-- **motion-framer** - freshtechbro/claudedesignskills
-- **hallmark** - nutlope/hallmark
-- **aso-router** plus 39 App Store / Google Play growth skills (`aso-audit`, `keyword-research`, `metadata-optimization`, ...) - Eronred/aso-skills
+- **grilling**, **wait-what** - mattpocock/skills
 
 ## Setup
 

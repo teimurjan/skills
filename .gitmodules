@@ -1,15 +1,6 @@
 [submodule ".vendor/anthropic-skills"]
 	path = .vendor/anthropic-skills
 	url = https://github.com/anthropics/skills
-[submodule ".vendor/addyosmani-agent-skills"]
-	path = .vendor/addyosmani-agent-skills
-	url = https://github.com/addyosmani/agent-skills
-[submodule ".vendor/freshtechbro-claudedesignskills"]
-	path = .vendor/freshtechbro-claudedesignskills
-	url = https://github.com/freshtechbro/claudedesignskills
-[submodule ".vendor/nutlope-hallmark"]
-	path = .vendor/nutlope-hallmark
-	url = https://github.com/Nutlope/hallmark
-[submodule ".vendor/eronred-aso-skills"]
-	path = .vendor/eronred-aso-skills
-	url = https://github.com/Eronred/aso-skills
+[submodule ".vendor/mattpocock-skills"]
+	path = .vendor/mattpocock-skills
+	url = https://github.com/mattpocock/skills
