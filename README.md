@@ -10,7 +10,6 @@ Authored here:
 
 - **browser-testing** - browser automation via the Agent Browser Protocol.
 - **address-pr-review** - fetch and address GitHub PR review comments.
-- **dev-tunnel** - run a local dev server and expose it via ngrok.
 - **perf-engineering** - CPU/memory optimization guidance.
 - **ux-laws-audit** - audit a UI (web or mobile) against the Laws of UX and produce a prioritized, actionable fix report.
 

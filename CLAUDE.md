@@ -23,8 +23,8 @@ Authored skills:
 
 - **browser-testing** - ABP (Agent Browser Protocol) CLI wrapper in Deno (`browser.js`). Has npm deps for Readability/Markdown extraction (`@mozilla/readability`, `jsdom`, `turndown`).
 - **address-pr-review** - Fetches and addresses GitHub PR review comments. Pure markdown, no runtime code.
-- **dev-tunnel** - Runs a local JS/TS dev server and exposes it via ngrok. Pure markdown, no runtime code.
 - **perf-engineering** - CPU/memory optimization guidance. Pure markdown, no runtime code.
+- **ux-laws-audit** - Audits a UI against the Laws of UX. Markdown with `references/`, `assets/`, and `evals/`.
 
 Vendored skills:
 
@@ -46,8 +46,9 @@ A `SKILL.md` has YAML frontmatter (`name`, `description`) followed by markdown i
 
 ## Conventions
 
-- Skills are referenced by directory name, such as `browser-testing` or `dev-tunnel`.
+- Skills are referenced by directory name, such as `browser-testing` or `ux-laws-audit`.
 - Vendored skills are updated via `git submodule update --remote --recursive`; do not edit them in place.
 - Keep skill instructions agent-neutral unless a capability is truly agent-specific.
+- Update `README.md` in the same change whenever a skill, setup step, or script option is added, removed, or renamed.
 - Commit messages use conventional commits format (`feat:`, `chore:`, `fix:`).
 - There is no project-wide build step, test suite, or linter; skills are authored markdown plus lightweight scripts.

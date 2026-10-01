@@ -35,10 +35,11 @@ Add `--prune` to remove links in those directories that point into this repo but
 - Reference files under `references/` should be loaded only when the skill says they are relevant.
 - Do not edit vendored skills in place; update their submodules instead.
 - If adding a new authored skill, create a top-level directory with `SKILL.md` and optional supporting files.
+- Update `README.md` in the same change whenever a skill, setup step, or script option is added, removed, or renamed.
 
 ## Repository Notes
 
 - `browser-testing` includes a Deno CLI wrapper in `browser.js`.
-- `address-pr-review`, `dev-tunnel`, and `perf-engineering` are markdown-only skills.
+- `address-pr-review` and `perf-engineering` are markdown-only skills.
 - `ux-laws-audit` is a markdown skill (no runtime code) with a `references/` Laws-of-UX checklist and an `assets/` report template.
 - There is no project-wide build step, test suite, or linter.
