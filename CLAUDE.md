@@ -30,6 +30,7 @@ Vendored skills:
 
 - **skill-creator** - `anthropics/skills`
 - **grilling**, **wait-what** - `mattpocock/skills`
+- **simple-english** - `AminBlg/SimpleEnglish`; its plugin hooks are merged into agent settings by `scripts/install.sh`
 
 ## Code Graph
 

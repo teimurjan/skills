@@ -24,6 +24,10 @@ scripts/install.sh --agent claude
 scripts/install.sh --agent both
 ```
 
+The script also merges hooks from vendored plugin manifests into `~/.claude/settings.json` and `~/.codex/hooks.json`.
+
+Add `--prune` to remove links in those directories that point into this repo but no longer match a skill here.
+
 ## Skill Maintenance
 
 - Keep authored `SKILL.md` files agent-neutral unless the behavior depends on a specific agent capability.

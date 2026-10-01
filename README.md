@@ -18,6 +18,7 @@ Vendored as submodules in `.vendor/` and symlinked at the repo root:
 
 - **skill-creator** - anthropics/skills
 - **grilling**, **wait-what** - mattpocock/skills
+- **simple-english** - AminBlg/SimpleEnglish
 
 ## Setup
 
@@ -56,7 +57,23 @@ The script creates symlinks in:
 - Claude Code: `~/.claude/skills/<skill-name>`
 - OMP: `~/.omp/agent/skills/<skill-name>`
 
+Hooks declared by a vendored plugin (`.claude-plugin/plugin.json`, `.codex-plugin/plugin.json`) are merged into `~/.claude/settings.json` and `~/.codex/hooks.json`. Hooks that point into this repo are replaced on every run, so removed skills lose their hooks too. Codex asks you to trust new hooks in `/hooks`. This step needs `jq`.
+
+To turn a vendored skill and its hooks off in one project, add this to the project's `.claude/settings.local.json`:
+
+```json
+{ "skillOverrides": { "simple-english": "off" } }
+```
+
+Claude hides the skill, and `scripts/skill-enabled.sh` skips its hooks in both Claude and Codex. Codex has no per-project skill toggle, so the skill itself stays visible there.
+
 It will not overwrite real files or directories in those locations. If vendored skill symlinks are broken, initialize submodules with `git submodule update --init --recursive` and rerun the script.
+
+After removing a skill from this repo, pass `--prune` to also delete its now-stale links from the target directories. Only links that point into this repo are touched:
+
+```sh
+scripts/install.sh --prune
+```
 
 ## Repository Structure
 

@@ -4,3 +4,6 @@
 [submodule ".vendor/mattpocock-skills"]
 	path = .vendor/mattpocock-skills
 	url = https://github.com/mattpocock/skills
+[submodule ".vendor/simple-english"]
+	path = .vendor/simple-english
+	url = https://github.com/AminBlg/SimpleEnglish
