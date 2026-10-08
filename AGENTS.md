@@ -42,4 +42,5 @@ Add `--prune` to remove links in those directories that point into this repo but
 - `browser-testing` includes a Deno CLI wrapper in `browser.js`.
 - `address-pr-review` and `perf-engineering` are markdown-only skills.
 - `ux-laws-audit` is a markdown skill (no runtime code) with a `references/` Laws-of-UX checklist and an `assets/` report template.
+- `app-scaffold` ships a Bun script (`scripts/scaffold.ts`) that copies from `~/Projects/takt` and `~/Projects/wait-professor` at git `HEAD`; its Claude Design step needs Claude's Artifact tool.
 - There is no project-wide build step, test suite, or linter.

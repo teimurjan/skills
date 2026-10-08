@@ -12,6 +12,7 @@ Authored here:
 - **address-pr-review** - fetch and address GitHub PR review comments.
 - **perf-engineering** - CPU/memory optimization guidance.
 - **ux-laws-audit** - audit a UI (web or mobile) against the Laws of UX and produce a prioritized, actionable fix report.
+- **app-scaffold** - scaffold a paid iOS app, landing site and Preact pain-point funnel (Next.js on Vercel, Supabase, StoreKit + Paddle or Dodo, Resend, fastlane) by copying the generic half of `~/Projects/takt` and `~/Projects/wait-professor`, with the design requested from Claude Design. Needs `bun` and both reference repos checked out.
 
 Vendored as submodules in `.vendor/` and symlinked at the repo root:
 

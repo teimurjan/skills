@@ -25,6 +25,7 @@ Authored skills:
 - **address-pr-review** - Fetches and addresses GitHub PR review comments. Pure markdown, no runtime code.
 - **perf-engineering** - CPU/memory optimization guidance. Pure markdown, no runtime code.
 - **ux-laws-audit** - Audits a UI against the Laws of UX. Markdown with `references/`, `assets/`, and `evals/`.
+- **app-scaffold** - Scaffolds an iOS app + landing + web funnel from the user's reference repos. Markdown with `references/`, `assets/`, and a Bun script (`scripts/scaffold.ts`) that copies from the references' git `HEAD`.
 
 Vendored skills:
 
