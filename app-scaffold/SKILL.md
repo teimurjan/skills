@@ -118,7 +118,7 @@ StoreKit products, review gotchas.
 Walk the user through `references/services.md` in order. It names every dashboard click and the env
 var each one yields. Fill `.env.local` and `ios/Config/*.xcconfig` (blank means "not configured",
 never a placeholder). Apply the migrations (`supabase db push`, or paste them in the SQL editor in
-order) and paste the email templates by hand. Every service has an `is…Configured` gate, so the app
+order) and paste the email templates by hand, after Phase 8 re-themed them. Every service has an `is…Configured` gate, so the app
 boots with any of them missing.
 
 ## Phase 8 — Design → tokens
@@ -126,6 +126,16 @@ boots with any of them missing.
 When the user approves the Claude Design artifact, read it back (`Artifact` → `read`) and
 transcribe it per `references/design.md`: `app/base.css` `:root`, `Palette.swift`, the fonts vendored
 once into `ios/<Target>/Resources/Fonts/`, and every reader of those fonts.
+
+Then re-theme the six `supabase/templates/*.html` from the same tokens. They arrive in the reference
+app's look with only the name swapped. Keep every `{{ .Var }}`, link and sentence. Change the page
+background, the card, the button (the accent fill), the font and the header. Load the font with a
+Google Fonts `<link>` and a system fallback stack. The header is the product's real wordmark as
+`{{ .SiteURL }}/ico/wordmark.png`, with the name as its `alt`. Mail clients drop SVG, so make the
+icon build write that PNG beside `wordmark.svg`. Fix the article before the new name ("an Oyno", not
+"a Oyno"). Show the user one preview artifact of all six in `srcdoc` iframes, with sample values
+and the wordmark as a data URI, because the artifact CSP blocks remote images. Write
+the six subjects into the project `CLAUDE.md` Sign-in section. The user pastes them in Phase 7.
 
 ## Phase 9 — Translations, App Store, deploy
 

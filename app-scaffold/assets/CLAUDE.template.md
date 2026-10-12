@@ -53,6 +53,15 @@ above Google. The app exchanges an id_token (Apple, Google) and runs PKCE in
 `/auth/callback`. The email templates carry a code and no link. Inside Meta's webview the funnel
 hides Google.
 
+The emails are `supabase/templates/`, one file per tab in Authentication → Emails, in the
+<design name> look. You paste them by hand, and nothing pushes them. Subjects:
+
+- `confirmation`, `magic_link`: "Your <Name> code"
+- `reauthentication`: "Your <Name> confirmation code"
+- `recovery`: "Reset your <Name> password"
+- `email_change`: "Confirm your new <Name> email"
+- `invite`: "You’ve been invited to <Name>"
+
 ## Language and currency
 
 Two independent choices. The locale list is the same in three places

@@ -55,7 +55,17 @@ days. Submit it as soon as the site has live Privacy, Terms and Refund pages and
   - **Facebook**: app id + secret (step 5).
 - Auth → Emails: paste each `supabase/templates/*.html` into its tab and set the subjects by hand.
   `confirmation`, `magic_link` and `reauthentication` carry `{{ .Token }}` only, with no link: a
-  link opened from the mail app lands in a browser that cannot redeem the PKCE code.
+  link opened from the mail app lands in a browser that cannot redeem the PKCE code. Paste them
+  only after Phase 8 re-themed them. Subjects:
+
+  | Tab | File | Subject |
+  | --- | --- | --- |
+  | Confirm signup | `confirmation` | Your `<Name>` code |
+  | Magic link | `magic_link` | Your `<Name>` code |
+  | Reauthentication | `reauthentication` | Your `<Name>` confirmation code |
+  | Reset password | `recovery` | Reset your `<Name>` password |
+  | Change email address | `email_change` | Confirm your new `<Name>` email |
+  | Invite user | `invite` | You’ve been invited to `<Name>` |
 - Auth → SMTP: Resend (step 6) as the sender, so the codes don't come from Supabase's rate-limited
   default.
 
