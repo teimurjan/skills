@@ -66,6 +66,14 @@ accent span and `{name}` is a placeholder.
 - **390×650 is the budget for every step**, because that is what Meta's in-app browser leaves.
   The paywall is the only exception. Use `h-dvh`, a scrolling `main`, `mb-auto` and
   `max-w-[520px]`.
+- **Type runs large**, because readers are on a phone in Meta's in-app browser, often tired:
+  - headline `clamp(28px,7.4vw,36px)`, section title `clamp(24px,6vw,30px)`;
+  - answer options 18.5px, body copy 18px, card and list text 16–17px;
+  - small text (hints, notes, legal, the progress count) 14.5–15.5px, and nothing under 12px.
+    A label that a widget's geometry holds (a tag on a tight timeline) is the only exception.
+- **Every word is readable on its background**: content text is `--ink` or `--ink-muted`, never
+  `--faint` or ink at reduced opacity. A green or red cue sits on a solid surface with the darker
+  ink of its colour, never as a translucent tint over a gradient or glass.
 - **One idea per screen**, with the headline in the ad's words. Body copy is at most two short lines.
 - **Red means "this is costing you"**, and appears once (recap card 1). The accent *fill* is the
   footer button only.

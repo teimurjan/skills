@@ -2,6 +2,7 @@
 // Copies the generic stack out of the reference repos' committed HEAD into a new
 // directory, renamed. Usage: bun scaffold.ts --dest ~/Projects/acme --target Acme \
 //   --name "Acme" --slug acme --domain acme.app [--biller paddle|dodo] [--bundle com.x.acme]
+//   [--ref ~/Projects/takt] [--dodo-ref ~/Projects/wait-professor] [--shots-ref ~/Projects/oyno]
 import { $ } from "bun";
 import { existsSync, mkdirSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
@@ -35,6 +36,7 @@ const BILLER = (args.biller ?? "paddle") as Biller;
 const BUNDLE = args.bundle ?? `com.teimurjan.${SLUG}`;
 const REF = expand(args.ref ?? "~/Projects/takt");
 const DODO_REF = expand(args["dodo-ref"] ?? "~/Projects/wait-professor");
+const SHOTS_REF = expand(args["shots-ref"] ?? "~/Projects/oyno");
 
 if (!/^[A-Z][A-Za-z0-9]*$/.test(TARGET)) throw new Error("--target must be PascalCase, e.g. WaitProfessor");
 if (!/^[a-z][a-z0-9]*$/.test(SLUG)) throw new Error("--slug must be lowercase letters/digits, e.g. waitprofessor");
@@ -79,7 +81,7 @@ const TAKT: Entry[] = [
   { path: "public/badges" }, { path: "public/scripts/pixel.js" },
   // App Store
   { path: "appstore/fastlane/Appfile" }, { path: "appstore/fastlane/Deliverfile" },
-  { path: "appstore/scripts" }, { path: "appstore/captions/en.json" }, { path: "appstore/source/frame.png" },
+  { path: "appstore/captions/en.json" }, { path: "appstore/source/frame.png" },
   { path: "appstore/metadata/en-US" },
   // iOS
   ...["Debug.xcconfig", "Production.xcconfig", "Local.xcconfig.example"].map((c) => ({ path: `ios/Config/${c}` })),
@@ -105,6 +107,9 @@ const WAIT_PROFESSOR: Entry[] = [
   { path: "supabase/migrations/0009_restore_apply_dodo_entitlement_event.sql", group: "dodo", to: "supabase/migrations/0003_apply_dodo_entitlement_event.sql" },
 ];
 
+// Oyno's store pipeline is takt's plus callouts (a widget zoomed out of the phone) and photo frames.
+const OYNO: Entry[] = [{ path: "appstore/scripts" }, { path: "ios/Oyno/App/ScreenshotCallout.swift" }];
+
 const TAKT_RENAMES: [RegExp, string][] = [
   [/com\.teimurjan\.printyard/g, BUNDLE],
   [/printyard\.app/g, DOMAIN],
@@ -118,6 +123,13 @@ const DODO_RENAMES: [RegExp, string][] = [
   [/Wait Professor/g, DISPLAY],
   [/WaitProfessor/g, TARGET],
   [/wait-professor|waitprofessor/g, SLUG],
+];
+
+const OYNO_RENAMES: [RegExp, string][] = [
+  [/com\.teimurjan\.oyno/g, BUNDLE],
+  [/oyno\.app/g, DOMAIN],
+  [/Oyno/g, TARGET],
+  [/oyno/g, SLUG],
 ];
 
 const BINARY = /\.(png|webp|jpe?g|ico|ttf|otf|woff2?|p8|car)$/i;
@@ -178,7 +190,7 @@ const ENTITLEMENTS = `<?xml version="1.0" encoding="UTF-8"?>
 </plist>
 `;
 
-const DOMAIN_TERMS = "shop|Shop|spool|Spool|filament|Filament|printer|Printer|Costing|costing|resin|Resin|ShopStore|demoShop";
+const DOMAIN_TERMS = "shop|Shop|spool|Spool|filament|Filament|printer|Printer|Costing|costing|resin|Resin|ShopStore|demoShop|kidhours|toddler|Toddler";
 
 async function leftovers() {
   const hits = await $`grep -rlwE ${DOMAIN_TERMS} ${DEST} ${"--exclude=*.xcstrings"}`.nothrow().text();
@@ -187,13 +199,14 @@ async function leftovers() {
 
 mkdirSync(DEST, { recursive: true });
 const core = await copy(REF, TAKT, TAKT_RENAMES);
+const shots = await copy(SHOTS_REF, OYNO, OYNO_RENAMES);
 const dodo = BILLER === "dodo" ? await copy(DODO_REF, WAIT_PROFESSOR, DODO_RENAMES) : { absent: [], written: 0 };
 await writePackageJson();
 writeFileSync(join(DEST, `ios/${TARGET}/${TARGET}.entitlements`), ENTITLEMENTS);
 const pbxproj = join(DEST, `ios/${TARGET}.xcodeproj/project.pbxproj`);
 writeFileSync(pbxproj, (await Bun.file(pbxproj).text()).replace(/(INFOPLIST_KEY_CFBundleDisplayName = )[^;]+;/g, `$1"${DISPLAY}";`));
 
-const absent = [...core.absent, ...dodo.absent];
-console.log(`copied ${core.written + dodo.written} files into ${DEST} (biller: ${BILLER})`);
+const absent = [...core.absent, ...shots.absent, ...dodo.absent];
+console.log(`copied ${core.written + shots.written + dodo.written} files into ${DEST} (biller: ${BILLER})`);
 if (absent.length) console.log(`\nmissing in the reference HEAD (moved or deleted, port by hand):\n  ${absent.join("\n  ")}`);
 console.log(`\nfiles still naming the reference product's domain (strip these):\n  ${(await leftovers()).join("\n  ")}`);

@@ -58,6 +58,8 @@ Constraints (the house style; keep them unless the brief says otherwise):
   Both must be free OFL fonts available as TTF (they are vendored once and shared by the app, the
   site, the funnel and the screenshots).
 - Tap targets of 44pt minimum, 52pt for the committing button.
+- Large, high-contrast type in the funnel: the sizes and the colour rules are in
+  `references/funnel.md` → Rules. Ask Claude Design for them in the brief.
 - No motion that needs a library. Entrances are a short stagger: title, then body, then options.
 
 ## Transcribe it (Phase 8)

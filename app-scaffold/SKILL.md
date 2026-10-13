@@ -11,6 +11,8 @@ reference is the user's own code, read from git `HEAD`:
 - **takt** (`~/Projects/takt`, Printyard) — the canonical source for everything: site, funnel,
   auth, Apple + Paddle entitlements, iOS skeleton, App Store tooling.
 - **wait-professor** (`~/Projects/wait-professor`) — the source for the Dodo Payments half only.
+- **oyno** (`~/Projects/oyno`) — the source for the App Store screenshot scripts and
+  `ScreenshotCallout.swift`: takt's pipeline plus zoomed widgets and photo frames.
 
 Never invent a pattern either repo already solves. When a step below is unclear, read the
 reference file it names before writing anything.
@@ -142,7 +144,9 @@ the six subjects into the project `CLAUDE.md` Sign-in section. The user pastes t
 - Locales: the same list in three places (`InterfaceLanguage.supported`, `lib/i18n.ts` `LOCALES`,
   `appstore/scripts/lib/locales.mjs`), each with a site deck, funnel deck, xcstrings language and
   metadata folder. `bun run strings:check` is the gate.
-- App Store: `references/appstore.md`.
+- App Store: `references/appstore.md`. Plan the frames before you capture: for each caption, pick
+  the screen, and the widget to zoom when the proof is small on the phone. Tag those widgets with
+  `.screenshotCallout(id)`.
 - Deploy: Vercel project on the apex, the env from Phase 7, and `.github/workflows/deploy.yml`
   (needs `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`). Then point the webhooks at production
   (`services.md` §6–7) and send one sandbox purchase through each biller end to end.

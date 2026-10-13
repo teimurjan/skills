@@ -5,8 +5,9 @@
 ## Architecture
 
 Root is the Next.js backend (API, payments, marketing site, web funnel). The SwiftUI app lives in
-`ios/` and the store-listing pipeline in `appstore/`. Scaffolded from Printyard (`~/Projects/takt`);
-when a pattern is missing here, look there before inventing one.
+`ios/` and the store-listing pipeline in `appstore/`. Scaffolded from Printyard (`~/Projects/takt`),
+with the screenshot scripts from Oyno (`~/Projects/oyno`); when a pattern is missing here, look
+there before inventing one.
 
 **No free tier, and the wall is on writing, not reading.** Everything already on the device opens
 for free. Adding to it needs a live entitlement. The gate is `requireEntitlement()` inside

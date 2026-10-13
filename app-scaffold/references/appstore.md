@@ -14,13 +14,16 @@
   plus `PRIORITY_TAGS`.
 - `appstore/scripts/lib/screenshot-kit.mjs`: this is the brand file. Edit `SCREENS` (`nn` → screen
   name in the harness), `PALETTE`, `FACES`/fonts and the background.
+- `appstore/scripts/generate-app-store-screenshots.mjs`: the photo frame's fade starts from Oyno's
+  canvas as a literal `rgba(255,248,239,0)`. Change it to the new `PALETTE.canvas` at zero alpha.
 - `appstore/scripts/lib/simulator.mjs`: `SCHEME`, `BUNDLE_ID`, `DEFAULT_DEVICE`.
 - `appstore/scripts/check-metadata.mjs`: the brand in `name.txt` and `REQUIRED_LINKS` (the privacy
   URL plus Apple's standard EULA).
 - `generate-creative-assets.mjs` / `push-creative-assets.mjs` are optional (ASC header and search
   images). Edit `CREATIVES` and `SEARCH_CHOICES` or leave them unused.
 - `appstore/captions/<tag>.json`: `{"default":[{"slug","source":"NN","caption":"Text [one emphasis]"}]}`.
-  Exactly one `[…]` per caption. Frame 01 is the winning ad's line.
+  Exactly one `[…]` per caption. Frame 01 is the winning ad's line. A frame can also zoom a widget
+  or be a photo (see Screenshots).
 
 ## Metadata (`appstore/metadata/<asc-locale>/`)
 | File | Limit |
@@ -50,7 +53,28 @@ the table.
    `appstore/source/<tag>/` (gitignored).
 3. `bun run screenshots:composite [--sources=NN]` writes 1290×2796 frames to
    `appstore/screenshots/<asc>/` (gitignored) and 480×1040 WebP to `public/screenshots/<asc>/`
-   (**committed**; the site's gallery serves these).
+   (**committed**; the site's gallery serves these). It also writes each raw capture, without a
+   caption, to `public/screenshots/<asc>/screens/<slug>.webp`.
+
+### Zoomed widgets (callouts)
+A callout lifts one widget off the phone and draws it larger, over a veiled screen. Use one when
+the caption's proof is a small part of the screen (a number, a card, a sheet). The reference is
+Oyno (`~/Projects/oyno/appstore/captions/en.json`).
+1. In SwiftUI, tag the widget: `.screenshotCallout("battery")` (`App/ScreenshotCallout.swift`). It
+   does nothing outside a Debug screenshot run.
+2. The capture writes `appstore/source/<tag>/NN.json` beside `NN.png`, with each tagged widget's
+   frame in points. Recapture after you add or move a tag.
+3. In the caption, name the id: `{"slug","source":"04","callout":"evidence","caption":…}`. An array
+   (`["schedules","alwaysAllowed"]`) lifts the box that holds all of them. `"zoom": 1.8` overrides
+   the default 1.3. The zoom is capped so the widget keeps a 48px margin on the canvas.
+4. If the composite says a capture "reported no … callout", the widget was off screen or the
+   capture is stale. Scroll it into view in the harness, then recapture.
+
+### Photo frames
+`{"slug","photo":"together.jpg","caption":…}` makes a frame without a phone. The photo
+(`appstore/source/<file>`, `.jpg` or `.png`, committed) fills the canvas and fades into it under the
+caption. A frame has either `source` or `photo`, never both. Use it to open the set with the
+person the ad speaks to.
 
 `bun run appstore:menu` wraps all of it: capture, composite, pull to `.download/`, validate, push
 metadata and screenshots, push creatives.
