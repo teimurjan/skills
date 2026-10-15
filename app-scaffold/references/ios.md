@@ -1,6 +1,7 @@
 # iOS
 
-SwiftUI, iOS 17+, iPhone only, portrait. The only SPM packages are GoogleSignIn-iOS and
+SwiftUI, iOS 17+, iPhone only and portrait by default (for iPad and iPhone Duo, see the last
+section). The only SPM packages are GoogleSignIn-iOS and
 Amplitude-Swift. There is no Supabase SDK (`SupabaseAuth` is raw GoTrue REST), no Facebook SDK and
 no RevenueCat.
 
@@ -85,9 +86,44 @@ subscription never walls the launch screen.
 - `Typeface`: fonts registered at runtime, with `assertFontsResolve()` guarding PostScript names.
 - `Screen` + `SwipeBackGesture` (a hidden nav bar disables edge-swipe) and `keyboardDismissBar`
   (`.decimalPad` has no return key).
-- `ScreenshotHarness` (`#if DEBUG`, `--screenshot <name>`, seeded fixtures).
+- `ScreenshotHarness` (`#if DEBUG`, `--screenshot <name>`, seeded fixtures). Port three parts
+  of Oyno's version:
+  - It draws a tab's screen inside `RootTabs`, on the tab that the screen belongs to, so the frames
+    show the tab bar as the app ships it. A screen that covers the tabs (the first run, a modal
+    flow) draws without them. The map is `tab(for:)`.
+  - A fixture that reads the clock takes a fixed date, so a capture shows the same state at any
+    hour. Oyno uses the latest Thursday at 5:15 PM.
+  - To check another device's layout from one simulator, launch with `--window 951x669` (a
+    window of that size), `--bars side` (the Duo's side bar) and `--idiom phone|pad`.
 - `ProfileScreen`: language picker, manage subscription, sign out, **delete account** (guideline
   5.1.1(v), `DELETE /api/account`).
+
+## iPad and iPhone Duo
+If the intake chose more than the iPhone, do this section. Port the files from
+`~/Projects/oyno/ios/Oyno/` by hand. The scaffold does not copy them, because they use parts of
+Oyno's design system that takt does not have.
+
+1. In the pbxproj, set `TARGETED_DEVICE_FAMILY = "1,2"` in every target and configuration. Replace
+   `INFOPLIST_KEY_UISupportedInterfaceOrientations` with an `_iPhone` key (`Portrait`,
+   `LandscapeLeft`, `LandscapeRight`) and an `_iPad` key (all four).
+2. Port `App/OrientationLock.swift` and attach it in the `App` with `@UIApplicationDelegateAdaptor`.
+   It keeps a tall phone upright and lets the Duo and iPad turn.
+3. Port `Shared/DesignSystem/Adaptive.swift` and add `Metric.fold` (40) and `Metric.readableWidth`
+   (600). The root reads the window once with `.adaptiveLayout()`. Every screen reads
+   `@Environment(\.adaptive)`: `columns` is `.one`, `.two` or `.rows`, and `bars` is `.inline`,
+   `.top` or `.side`. Port `OynoTests/AdaptiveTests.swift` with it. It pins each window size the
+   design draws to its layout.
+4. Give each screen a layout per `adaptive.columns`:
+   - `FoldColumns` splits at the window's center, which is the Duo's fold. Nothing to tap goes in
+     the fold. `FoldRows` does the same for an upright wide window.
+   - `Screen` caps its column with `.readableWidth()` and calls `.systemBar(adaptive)` in place
+     of hiding the navigation bar.
+   - If `adaptive.barsAreSystem` is true, the header's buttons move into the toolbar as
+     `BarButton` (Oyno's `Controls.swift`).
+   - `adaptive.roomy` (a window 1000pt or wider) sets type and controls one size up.
+5. Port `App/RootTabs.swift`, the tab view of both `AppRoot` and `ScreenshotHarness`. The system
+   tabs drop the names on iPad and the icons in the Duo's side bar. So `RootTabs` hides the system
+   tab bar there and floats its own, which needs `floatingGlass()` from Oyno's `Card.swift`.
 
 ## Build gate
 ```bash

@@ -3,7 +3,10 @@
 ## Prerequisites
 - `brew install fastlane`. There is no Gemfile.
 - `npx playwright install chromium`.
-- Xcode with an "iPhone 17" simulator runtime.
+- Xcode with an "iPhone 17" simulator runtime. For the other slots, also "iPad Pro 13-inch (M5)",
+  "iPad Air 11-inch (M4)" and "iPhone Duo".
+- For iPhone Duo frames, a fastlane later than 2.241.0 (fastlane#30444). An older deliver refuses
+  the whole upload. The menu checks the version before a push.
 - The ASC API key (App Manager) `.p8` in `appstore/fastlane/`. The menu turns it into
   `asc-api-key.json` (gitignored) after asking for the Issuer ID.
 
@@ -13,9 +16,11 @@
 - `appstore/scripts/lib/locales.mjs`: `LOCALES` `{tag, sim, asc}` trimmed to the launch list,
   plus `PRIORITY_TAGS`.
 - `appstore/scripts/lib/screenshot-kit.mjs`: this is the brand file. Edit `SCREENS` (`nn` → screen
-  name in the harness), `PALETTE`, `FACES`/fonts and the background.
+  name in the harness), `PALETTE`, `FACES`/fonts and the background. Trim `DEVICES` to the store
+  slots the app ships. For an iPhone-only app, keep only `iphone`.
 - `appstore/scripts/generate-app-store-screenshots.mjs`: the photo frame's fade starts from Oyno's
-  canvas as a literal `rgba(255,248,239,0)`. Change it to the new `PALETTE.canvas` at zero alpha.
+  canvas as a literal `rgba(255,248,239,0)`, once in each photo layout. Change both to
+  the new `PALETTE.canvas` at zero alpha.
 - `appstore/scripts/lib/simulator.mjs`: `SCHEME`, `BUNDLE_ID`, `DEFAULT_DEVICE`.
 - `appstore/scripts/check-metadata.mjs`: the brand in `name.txt` and `REQUIRED_LINKS` (the privacy
   URL plus Apple's standard EULA).
@@ -75,6 +80,33 @@ Oyno (`~/Projects/oyno/appstore/captions/en.json`).
 (`appstore/source/<file>`, `.jpg` or `.png`, committed) fills the canvas and fades into it under the
 caption. A frame has either `source` or `photo`, never both. Use it to open the set with the
 person the ad speaks to.
+
+### iPad and iPhone Duo
+`DEVICES` in `screenshot-kit.mjs` lists the screenshot sets, with one simulator each.
+
+| Set | `--device` | Canvas | Posture in Device Hub |
+|---|---|---|---|
+| iPhone 6.9" | `iphone` | 1290×2796 | upright |
+| iPad 13" | `ipad` | 2752×2064 | on its side |
+| iPad 11" | `ipad-11` | 2360×1640 | on its side |
+| iPhone Duo, inner display | `duo` | 2853×2007 | open, on its side |
+| iPhone Duo, outer display | `duo-outer` | 1398×2034 | closed, upright |
+
+1. Set the posture in Device Hub before you capture. Only Device Hub turns or folds a simulator.
+   The capture reads the lit display. If the posture is wrong, it stops and says what to fix. If a
+   capture is not the slot's pixel size, it also stops.
+2. `bun run screenshots:capture --device=ipad` writes to `appstore/source/ipad/<tag>/`. The
+   iPhone's captures stay at `appstore/source/<tag>/`.
+3. `bun run screenshots:composite --devices=ipad,duo` puts each capture under the transparent
+   screen of a device photograph, below the caption. The photographs are
+   `appstore/source/{ipad,ipad-11,duo,duo-frame-open}*.png` (committed). Each `mockup.screen` is
+   measured in its photograph's pixels, so a new photograph needs new numbers. On a canvas wider
+   than it is tall, a photo frame puts the photo on the left and the caption beside it.
+4. Each device's frames carry a prefix (`ipad-`, `ipad11-`, `duo-`, `duo-outer-`) in the same
+   locale folder, because deliver sorts the files by pixel size. Only the iPhone set goes to
+   `public/screenshots/`.
+5. Both Duo sets fill one App Store slot of at most 10 screenshots per locale. The menu refuses a
+   push over that limit.
 
 `bun run appstore:menu` wraps all of it: capture, composite, pull to `.download/`, validate, push
 metadata and screenshots, push creatives.

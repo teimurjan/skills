@@ -12,7 +12,10 @@ reference is the user's own code, read from git `HEAD`:
   auth, Apple + Paddle entitlements, iOS skeleton, App Store tooling.
 - **wait-professor** (`~/Projects/wait-professor`) — the source for the Dodo Payments half only.
 - **oyno** (`~/Projects/oyno`) — the source for the App Store screenshot scripts and
-  `ScreenshotCallout.swift`: takt's pipeline plus zoomed widgets and photo frames.
+  `ScreenshotCallout.swift`: takt's pipeline plus zoomed widgets, photo frames and the iPad and
+  iPhone Duo slots. It is also the source for the adaptive layout (`Adaptive.swift`,
+  `RootTabs.swift`, `OrientationLock.swift`). Its `ScreenshotHarness` draws each screen inside
+  the app's tabs.
 
 Never invent a pattern either repo already solves. When a step below is unclear, read the
 reference file it names before writing anything.
@@ -34,6 +37,8 @@ Then ask the decisions as multiple choice (the agent's question tool if it has o
 - Locales at launch: English only, or English plus the list (every tag needs a site deck, a funnel
   deck, an xcstrings language and an ASC metadata folder; adding one later is data, not routes).
 - Plans: monthly + yearly, plus lifetime (Paddle and App Store only), trial length (App Store intro offer only).
+- Devices: iPhone only (portrait, one store slot), or iPhone plus iPad and iPhone Duo (each screen
+  gets a two-column layout, and the listing gets the iPad 13", iPad 11" and iPhone Duo slots). See `references/ios.md`.
 
 ## Phase 1 — Start the slow things in parallel
 
@@ -81,7 +86,8 @@ copied tree typechecks except for a handful of predictable files:
 - iOS `AppRoot.swift`: keep the gate chain (Splash → Funnel → SignIn → Restoring → Paywall → main)
   and swap the `ShopStore` for one `<Target>Store`, the **only** type that mutates user data. Its
   writes go through `requireEntitlement() -> Bool`, and `refusedActions` is a counter, not a flag.
-  Replace the tabs with a single placeholder home.
+  Replace the tabs with a single placeholder home. When the app has tabs, port `RootTabs` from
+  Oyno so the app and the screenshot harness draw the same ones (`references/ios.md`).
 - `PurchaseStore.swift`: product ids become `<bundle>.fullaccess.{monthly,yearly[,lifetime]}`.
 - `AnalyticsEvent.swift`, `lib/analytics.ts`: keep the funnel, auth, paywall and purchase events,
   and drop the domain ones.
@@ -146,7 +152,7 @@ the six subjects into the project `CLAUDE.md` Sign-in section. The user pastes t
   metadata folder. `bun run strings:check` is the gate.
 - App Store: `references/appstore.md`. Plan the frames before you capture: for each caption, pick
   the screen, and the widget to zoom when the proof is small on the phone. Tag those widgets with
-  `.screenshotCallout(id)`.
+  `.screenshotCallout(id)`. Trim `DEVICES` in `screenshot-kit.mjs` to the slots the app ships.
 - Deploy: Vercel project on the apex, the env from Phase 7, and `.github/workflows/deploy.yml`
   (needs `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`). Then point the webhooks at production
   (`services.md` §6–7) and send one sandbox purchase through each biller end to end.

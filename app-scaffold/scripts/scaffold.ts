@@ -107,8 +107,13 @@ const WAIT_PROFESSOR: Entry[] = [
   { path: "supabase/migrations/0009_restore_apply_dodo_entitlement_event.sql", group: "dodo", to: "supabase/migrations/0003_apply_dodo_entitlement_event.sql" },
 ];
 
-// Oyno's store pipeline is takt's plus callouts (a widget zoomed out of the phone) and photo frames.
-const OYNO: Entry[] = [{ path: "appstore/scripts" }, { path: "ios/Oyno/App/ScreenshotCallout.swift" }];
+// Oyno's store pipeline is takt's plus callouts (a widget zoomed out of the phone), photo frames,
+// and the iPad and iPhone Duo slots, whose device photographs `DEVICES` in screenshot-kit reads.
+const OYNO: Entry[] = [
+  { path: "appstore/scripts" },
+  { path: "ios/Oyno/App/ScreenshotCallout.swift" },
+  ...["ipad-frame", "ipad-11-frame", "duo-frame", "duo-frame-open"].map((f) => ({ path: `appstore/source/${f}.png` })),
+];
 
 const TAKT_RENAMES: [RegExp, string][] = [
   [/com\.teimurjan\.printyard/g, BUNDLE],
