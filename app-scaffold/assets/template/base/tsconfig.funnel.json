@@ -1,0 +1,19 @@
+{
+  // The funnel compiles against Preact, the rest of the site against React. One `jsx`
+  // transform per program, so the funnel is its own: the root excludes these directories
+  // and `bun run typecheck` runs both. `Bun.build` reads this file too, so the bundle and
+  // the typecheck agree on what `<div>` compiles to.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "jsxImportSource": "preact",
+    "plugins": [],
+    "incremental": false
+  },
+  "include": [
+    "components/funnel/**/*",
+    "components/auth/**/*",
+    "scripts/build-funnel.tsx",
+    "scripts/wawoff2.d.ts"
+  ],
+  "exclude": ["node_modules"]
+}

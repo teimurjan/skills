@@ -1,0 +1,18 @@
+Appname helps you [the outcome a buyer wants]. Replace this paragraph with the one-sentence pitch, then the problem it solves, in the words your buyers use.
+
+WHY IT WORKS
+
+One or two short paragraphs on the insight behind the app. Lead with the outcome, not the feature list.
+
+WHAT YOU GET
+• The first thing the app does, as a benefit
+• The second thing, as a benefit
+• The third thing, as a benefit
+
+APPNAME PRO
+Describe the plans and any free trial exactly as the paywall sells them.
+
+Subscriptions renew automatically unless cancelled at least 24 hours before the period ends. Manage or cancel in your Apple ID settings.
+
+Terms of use: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Privacy policy: https://appname.example/privacy

@@ -1,0 +1,243 @@
+@import "tailwindcss";
+/* The site's and the funnel's sheet. The app under `app/app/` has its own entry
+   (`app/app/app.css`) and its own component tree, and the funnel's stylesheet is built from
+   this file by `scripts/build-funnel.tsx` with the whole repository as its source scan — so
+   the app's sources are excluded here, or every shadcn utility the app uses would land in
+   the funnel's CSS. */
+@source not "../components/ui";
+@source not "../components/app";
+@source not "./app";
+@source not "../hooks";
+/* The ad tooling — its sheets carry inline styles and its creatives are prose — is not a
+   source of class names for any stylesheet. */
+@source not "../meta";
+@import "./base.css";
+
+/* The site's measure, and the one place it is written down. Content inside can be narrower;
+   the frame does not move. */
+.shell {
+  width: 100%;
+  max-width: 64rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+/* --- Funnel components: the shapes the app draws, as classes ------------- */
+
+/* The one committing action per step, the app's `PrimaryButton`: a 56px accent capsule with
+   ink words. The single place the accent is a fill. */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 56px;
+  border-radius: 9999px;
+  background: var(--brand);
+  color: var(--ink);
+  font-size: 17px;
+  font-weight: 700;
+  transition: background-color 120ms ease;
+}
+
+.btn:hover:not(:disabled) {
+  background: var(--accent-pressed);
+}
+
+.btn:active:not(:disabled) {
+  background: var(--accent-pressed);
+}
+
+/* Nothing to press yet, and it says so rather than swallowing the tap. */
+.btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* A field is a card: paper, 24px corners, no border — the sign-in fields of the app. Focus
+   is an ink ring, since an accent one can be too faint on paper to say where the caret is. */
+.field {
+  width: 100%;
+  height: 56px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 24px;
+  background: var(--surface);
+  box-shadow: 0 1px 0 rgb(80 46 15 / 0.08);
+  color: var(--ink);
+  font-size: 15px;
+}
+
+.field::placeholder {
+  color: var(--ink-muted);
+}
+
+.field:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--ink);
+}
+
+/* A selectable card — the funnel's question options and the offer's plans. It turns ink
+   when picked, and only the fill changes, so nothing below it moves. Words inherit. */
+.choice {
+  width: 100%;
+  border-radius: 24px;
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 1px 0 rgb(80 46 15 / 0.08);
+  transition:
+    background-color 150ms ease-out,
+    color 150ms ease-out;
+}
+
+.choice[data-selected="true"] {
+  background: var(--ink);
+  color: var(--on-ink);
+}
+
+/* A picked plan lifts off the page, `paperCard(raised:)`. */
+.choice--raised[data-selected="true"] {
+  box-shadow: 0 2px 12px rgb(80 46 15 / 0.14);
+}
+
+/* Emphasis inside a headline, as `FunnelCopy.accented` draws it: the accent laid under ink
+   words, since accent words on the canvas can be too faint to read. On ink the span is amber. */
+.hl {
+  border-radius: 4px;
+  padding-inline: 0.08em;
+  background: color-mix(in srgb, var(--brand) 45%, transparent);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.hl-on-ink {
+  color: var(--amber);
+}
+
+/* A lifted place travels on a plate of the canvas, reaching 8px past the cards. */
+.place[data-lifted] {
+  position: relative;
+  z-index: 10;
+  border-radius: 24px;
+  background: var(--canvas);
+  box-shadow:
+    0 0 0 8px var(--canvas),
+    0 6px 16px 8px rgb(80 46 15 / 0.16);
+}
+
+/* The platform's own colour faces rather than a 1 MB webfont. The chain is needed: without
+   it a glyph the system has no colour face for is drawn by Inter, as a hollow rectangle. */
+.emoji {
+  font-family:
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji",
+    "Android Emoji", sans-serif;
+}
+
+/* Driven by `data-shown` rather than by mounting the row late, so the widget's full height
+   is reserved from the first frame and the step below it never walks down the screen. */
+.row {
+  transition:
+    opacity 380ms ease,
+    transform 380ms cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+.row[data-shown="false"] {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
+/* Transcribed from the app's own navigation transition. No exit animations on purpose. */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.anim-rise {
+  animation: rise 220ms cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+
+/* A step's contents arrive one after another, scaling up from the top edge so the step
+   unfolds the way it is read. The cascade is in the *delays*, not the duration.
+ *
+ * Pure CSS and no state, which is what lets the build's render and the browser's hydration
+ * agree. Ten children is every step the funnel has; an eleventh arrives with the tenth. */
+@keyframes step-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Guarded on `no-preference` rather than left to the blanket override in `base.css`: that
+   one zeroes `animation-duration` but not `animation-delay`, and `forwards` holds the `0%`
+   keyframe through a delay, so a reader who asked for less motion would have got the
+   staggered pop-in anyway, a second and a half of invisible copy with no animation to
+   explain it. */
+@media (prefers-reduced-motion: no-preference) {
+  .anim-step > * {
+    transform-origin: top center;
+    animation: 300ms ease-out both step-in;
+  }
+
+  .anim-step > *:nth-child(1) { animation-delay: 150ms; }
+  .anim-step > *:nth-child(2) { animation-delay: 330ms; }
+  .anim-step > *:nth-child(3) { animation-delay: 510ms; }
+  .anim-step > *:nth-child(4) { animation-delay: 690ms; }
+  .anim-step > *:nth-child(5) { animation-delay: 870ms; }
+  .anim-step > *:nth-child(6) { animation-delay: 1050ms; }
+  .anim-step > *:nth-child(7) { animation-delay: 1230ms; }
+  .anim-step > *:nth-child(8) { animation-delay: 1410ms; }
+  .anim-step > *:nth-child(9) { animation-delay: 1590ms; }
+  .anim-step > *:nth-child(n + 10) { animation-delay: 1770ms; }
+}
+
+/* Safari 26 paints the strip behind the status bar one flat colour, sampled from a fixed
+   element on the top edge or else the page background, never from the page's pixels. So the
+   wash's top edge is one flat tint, and `.paywall-tint` hands Safari the same one: no seam.
+   `--brand` at 14% over `--canvas`, written out because `theme-color` needs a resolved colour. */
+:root {
+  --paywall-tint: #ece0d0;
+}
+
+.paywall-tint {
+  position: fixed;
+  inset-inline: 0;
+  top: 0;
+  height: 4px;
+  background-color: var(--paywall-tint);
+  pointer-events: none;
+}
+
+/* The paywall's own surface, and the only full-bleed background in the funnel: two soft pools
+   of the accent on the canvas, `PaywallWash` in `PaywallScreen.swift` stop for stop. On `main`
+   rather than the step's column so the wash reaches the edges of the phone.
+ *
+ * **The accent is `--brand`, not `--accent`**: this file points the second at the first, but a
+   shared surface should not assume it. */
+.paywall-page {
+  background:
+    linear-gradient(var(--paywall-tint), transparent 120px),
+    radial-gradient(
+      75% 52% at 0% 4%,
+      color-mix(in srgb, var(--brand) 30%, transparent) 0%,
+      color-mix(in srgb, var(--brand) 11%, transparent) 42%,
+      transparent 70%
+    ),
+    radial-gradient(
+      72% 50% at 100% 60%,
+      color-mix(in srgb, var(--brand) 24%, transparent) 0%,
+      color-mix(in srgb, var(--brand) 8%, transparent) 44%,
+      transparent 72%
+    ),
+    var(--canvas);
+}

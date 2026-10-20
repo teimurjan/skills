@@ -1,0 +1,311 @@
+/*
+ * The web half of the design system in ios/Appname/Shared/DesignSystem/ — the tokens and
+ * the handful of classes every surface draws. Imported by `app/globals.css` and never by
+ * itself: it carries no `@import "tailwindcss"`.
+ *
+ * `Palette.swift` value for value: a placeholder palette until the design lands. Ink on paper,
+ * one accent fill per section, on the one thing that section wants, with ink words on it; the
+ * alert colour only where something is costing the reader.
+ *
+ * Two names are spelled twice on purpose. shadcn/ui also calls its hover surface `--accent`
+ * and its quiet surface `--muted`, and its components are written against those names, so
+ * the accent and the muted ink live here as `--brand` and `--ink-muted`, names nobody else
+ * claims, and the entry sheet decides what `--accent` and `--muted` mean.
+ */
+
+:root {
+  --ink: #201a14;
+  --slate: #4a4038;
+  --ink-muted: #6f6458;
+  --faint: #8c7e6e;
+  --chevron: #b5a48f;
+  --hairline: #e0d3c2;
+  --divider: #efe6da;
+  --track: #e7dccd;
+  --surface: #fbf8f3;
+  --canvas: #f2ece3;
+  --brand: #c8955a;
+  --accent-pressed: #b8844c;
+  --alert: #9a3412;
+  --alert-wash: #fbe1cf;
+  --signal: #c2410c;
+  --good: #2f7d4f;
+  --caution: #c98a12;
+  /* Words on an ink surface, the current tab, and money kept — on ink and nowhere else. */
+  --on-ink: #f2ece3;
+  --on-ink-muted: #cdbfae;
+  --amber: #f2c38a;
+  --kept: #9fe3b4;
+
+  --accent: var(--brand);
+  --muted: var(--ink-muted);
+
+  /* Bricolage for words, falling back to Inter where it has no glyphs. */
+  --sans: var(--font-bricolage), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Bricolage has no Cyrillic, so Russian and Ukrainian are Inter throughout rather than
+   mixed glyph by glyph. A plain variable because `@theme inline` bakes its values. */
+:root:lang(ru),
+:root:lang(uk) {
+  --sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-slate: var(--slate);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-chevron: var(--chevron);
+  --color-hairline: var(--hairline);
+  --color-divider: var(--divider);
+  --color-track: var(--track);
+  --color-surface: var(--surface);
+  --color-canvas: var(--canvas);
+  --color-brand: var(--brand);
+  --color-accent: var(--accent);
+  --color-accent-pressed: var(--accent-pressed);
+  --color-alert: var(--alert);
+  --color-alert-wash: var(--alert-wash);
+  --color-signal: var(--signal);
+  --color-good: var(--good);
+  --color-caution: var(--caution);
+  --color-on-ink: var(--on-ink);
+  --color-on-ink-muted: var(--on-ink-muted);
+  --color-amber: var(--amber);
+  --color-kept: var(--kept);
+
+  --font-sans: var(--sans);
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+  /* The wordmark's face and no one else's — see `components/Logo.tsx`. Named for the job
+     rather than the family so a heading never quietly borrows it. */
+  --font-wordmark: var(--font-space-grotesk), var(--font-inter), ui-sans-serif, sans-serif;
+
+  --radius-card: 8px;
+  --radius-control: 6px;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background: var(--canvas);
+  color: var(--ink);
+}
+
+/* The all-caps mono rule above a block — `appnameEyebrow`, the same eyebrow the app draws
+   over every card. Wide tracking is what makes 11px legible. `--ink-muted` and not `--muted`: the app's
+   sheet hands `--muted` to shadcn's quiet surface, and an eyebrow painted in the surface
+   colour is an eyebrow nobody sees. */
+.eyebrow {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+/* Every number on the page. `tabular-nums` is the load-bearing part: a column of costs
+   whose digits change width is a column nobody can compare down. */
+.num {
+  font-family: var(--font-mono), monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The one card shape, matching `Card.swift`: paper on the canvas, 24px corners, no border,
+   and a 1px hairline of shadow rather than a blur. */
+.card {
+  background: var(--surface);
+  border-radius: 24px;
+  box-shadow: 0 1px 0 rgb(80 46 15 / 0.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Google's own button, copied out of their branding generator rather than restyled — the
+   multicolor G, the white surface, the #747775 stroke and the Roboto label are theirs to
+   specify, not ours to redraw. Along with the App Store badge it is one of the two places
+   on this site the palette above does not apply.
+
+   Two departures from the generated sheet, both geometry: full width, and the app's 56px
+   height and 24px card radius (`GoogleBrandSignInButton.swift`), so it sits in the column with
+   the fields and the submit button instead of as a 40px pill in its own dimensions. */
+.gsi-material-button {
+  user-select: none;
+  appearance: none;
+  background-color: #ffffff;
+  background-image: none;
+  border: 1px solid #747775;
+  border-radius: 24px;
+  box-sizing: border-box;
+  color: #1f1f1f;
+  cursor: pointer;
+  font-family: "Roboto", arial, sans-serif;
+  font-size: 14px;
+  height: 56px;
+  letter-spacing: 0.25px;
+  outline: none;
+  overflow: hidden;
+  padding: 0 12px;
+  position: relative;
+  text-align: center;
+  transition:
+    background-color 0.218s,
+    border-color 0.218s,
+    box-shadow 0.218s;
+  vertical-align: middle;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.gsi-material-button .gsi-material-button-icon {
+  height: 20px;
+  margin-right: 12px;
+  min-width: 20px;
+  width: 20px;
+}
+
+.gsi-material-button .gsi-material-button-content-wrapper {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  height: 100%;
+  justify-content: space-between;
+  position: relative;
+  width: 100%;
+}
+
+.gsi-material-button .gsi-material-button-contents {
+  flex-grow: 1;
+  font-family: "Roboto", arial, sans-serif;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: top;
+}
+
+.gsi-material-button .gsi-material-button-state {
+  transition: opacity 0.218s;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.gsi-material-button:disabled {
+  cursor: default;
+  background-color: #ffffff61;
+  border-color: #1f1f1f1f;
+}
+
+.gsi-material-button:disabled .gsi-material-button-contents,
+.gsi-material-button:disabled .gsi-material-button-icon {
+  opacity: 38%;
+}
+
+.gsi-material-button:not(:disabled):active .gsi-material-button-state,
+.gsi-material-button:not(:disabled):focus .gsi-material-button-state {
+  background-color: #303030;
+  opacity: 12%;
+}
+
+.gsi-material-button:not(:disabled):hover {
+  box-shadow:
+    0 1px 2px 0 rgba(60, 64, 67, 0.3),
+    0 1px 3px 1px rgba(60, 64, 67, 0.15);
+}
+
+.gsi-material-button:not(:disabled):hover .gsi-material-button-state {
+  background-color: #303030;
+  opacity: 8%;
+}
+
+/* Apple's own button, black fill and their mark, per the HIG. Above the Google button and,
+   like it, one of the two places on this site the one-accent palette does not apply — Apple
+   specifies the surface, the mark and the wording. Only the geometry is ours: the app's 56px
+   height and 24px card radius, the fields' own, so the sign-in stack reads as one group. */
+.brand-signin-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 56px;
+  border-radius: 24px;
+  border: 1px solid transparent;
+  font-family: var(--sans);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 120ms ease;
+}
+
+.brand-signin-button svg {
+  height: 18px;
+  width: auto;
+}
+
+.brand-signin-button:disabled {
+  cursor: default;
+  opacity: 0.4;
+}
+
+.brand-signin-button:not(:disabled):hover {
+  opacity: 0.9;
+}
+
+.brand-signin-button--apple {
+  background: #000;
+  color: #fff;
+}
+
+/* Meta's blue and white "f", per their Login button guidelines — the third surface the
+   palette does not own, and the first door in every sign-in stack. */
+.brand-signin-button--facebook {
+  background: #1877f2;
+  color: #fff;
+}
+
+/* The mark on the plan that is the better deal, and it is a tag rather than a control:
+   `.btn` was doing this job, which made a 52px full-width accent slab out of the word
+   "Save".
+
+   Ink on paper, not the accent: `PlanTag` in `PaywallScreen.swift`. The accent belongs to the
+   button that takes the money, and a second accent object turns the one thing the reader has
+   to press into one of two things competing to be pressed. */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 7px;
+  border-radius: 9999px;
+  background: var(--ink);
+  color: var(--surface);
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* On a card that is already ink, the tag turns amber, the highlight of an ink surface. */
+.tag--on-ink {
+  background: var(--amber);
+  color: var(--ink);
+}
+

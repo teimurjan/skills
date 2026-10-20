@@ -1,0 +1,310 @@
+{
+  "spine": {
+    "steps": [
+      {
+        "id": "problem",
+        "kind": "question",
+        "question": {
+          "key": "problem",
+          "options": [
+            {
+              "value": "time",
+              "emoji": "⏳"
+            },
+            {
+              "value": "money",
+              "emoji": "💸"
+            },
+            {
+              "value": "stress",
+              "emoji": "😮‍💨"
+            },
+            {
+              "value": "progress",
+              "emoji": "📉"
+            }
+          ]
+        }
+      },
+      {
+        "id": "why",
+        "kind": "statement",
+        "branch": {
+          "on": "problem"
+        }
+      },
+      {
+        "id": "often",
+        "kind": "question",
+        "question": {
+          "key": "often",
+          "options": [
+            {
+              "value": "daily",
+              "emoji": "📆"
+            },
+            {
+              "value": "weekly",
+              "emoji": "🗓️"
+            },
+            {
+              "value": "monthly",
+              "emoji": "🕰️"
+            },
+            {
+              "value": "rarely",
+              "emoji": "🙂"
+            }
+          ]
+        }
+      },
+      {
+        "id": "tried",
+        "kind": "question",
+        "question": {
+          "key": "tried",
+          "options": [
+            {
+              "value": "notes",
+              "emoji": "📝"
+            },
+            {
+              "value": "apps",
+              "emoji": "📱"
+            },
+            {
+              "value": "willpower",
+              "emoji": "💪"
+            },
+            {
+              "value": "nothing",
+              "emoji": "🤷"
+            }
+          ]
+        }
+      },
+      {
+        "id": "goal",
+        "kind": "question",
+        "question": {
+          "key": "goal",
+          "multi": true,
+          "options": [
+            {
+              "value": "calm",
+              "emoji": "🧘"
+            },
+            {
+              "value": "time",
+              "emoji": "⏱️"
+            },
+            {
+              "value": "control",
+              "emoji": "🎛️"
+            },
+            {
+              "value": "proud",
+              "emoji": "🏆"
+            }
+          ]
+        }
+      },
+      {
+        "id": "proof",
+        "kind": "statement"
+      },
+      {
+        "id": "soon",
+        "kind": "question",
+        "question": {
+          "key": "soon",
+          "options": [
+            {
+              "value": "now",
+              "emoji": "🚀"
+            },
+            {
+              "value": "month",
+              "emoji": "📅"
+            },
+            {
+              "value": "exploring",
+              "emoji": "🔭"
+            }
+          ]
+        }
+      },
+      {
+        "id": "recap",
+        "kind": "recap"
+      },
+      {
+        "id": "account",
+        "kind": "account"
+      }
+    ],
+    "surveyLength": 8,
+    "followUp": {
+      "time": "often",
+      "money": "tried",
+      "stress": "often",
+      "progress": "tried"
+    },
+    "separator": "|"
+  },
+  "decks": {
+    "en": {
+      "chrome": {
+        "continue": "Continue",
+        "letsGo": "Let's go",
+        "intro": "A few questions · about a minute",
+        "back": "Back",
+        "progress": "Progress"
+      },
+      "questions": {
+        "problem": {
+          "headline": "Which of these is [costing you] right now?",
+          "options": {
+            "time": "It takes too long",
+            "money": "It costs too much",
+            "stress": "It stresses me out",
+            "progress": "I can't see any progress"
+          },
+          "recap": {
+            "time": "Hours a week going into the problem.",
+            "money": "Money leaking out every month.",
+            "stress": "A worry that follows you home.",
+            "progress": "Effort with nothing to show for it."
+          }
+        },
+        "often": {
+          "headline": "How often does it happen?",
+          "options": {
+            "daily": "Every day",
+            "weekly": "Every week",
+            "monthly": "Every month",
+            "rarely": "Rarely"
+          },
+          "recap": {
+            "daily": "It happens every single day.",
+            "weekly": "It comes back every week.",
+            "monthly": "It catches you out every month."
+          }
+        },
+        "tried": {
+          "headline": "What have you tried so far?",
+          "options": {
+            "notes": "Notes and lists",
+            "apps": "Other apps",
+            "willpower": "Willpower",
+            "nothing": "Nothing yet"
+          },
+          "recap": {
+            "notes": "Lists that were right the day you wrote them.",
+            "apps": "Apps that wanted more than they gave.",
+            "willpower": "Willpower, which runs out by the evening."
+          }
+        },
+        "goal": {
+          "headline": "What would change things the most?",
+          "description": "Choose all that apply",
+          "options": {
+            "calm": "Feeling calm about it",
+            "time": "Getting my time back",
+            "control": "Feeling in control",
+            "proud": "Being proud of the result"
+          }
+        },
+        "soon": {
+          "headline": "How soon do you want this fixed?",
+          "options": {
+            "now": "Right now",
+            "month": "This month",
+            "exploring": "Just exploring"
+          },
+          "recap": {
+            "now": "Ready to fix it today.",
+            "month": "Ready to fix it this month."
+          }
+        }
+      },
+      "steps": {
+        "why": {
+          "headline": "It's not you. [The method] is broken.",
+          "body": "Say what the usual way gets wrong, so the reader stops blaming themselves.",
+          "variants": {
+            "money": {
+              "headline": "It's not you. [The cost] is hidden.",
+              "body": "Say where the money goes without anyone noticing."
+            },
+            "stress": {
+              "headline": "It's not you. [Nobody] should carry this in their head.",
+              "body": "Say why the worry never switches off."
+            },
+            "progress": {
+              "headline": "It's not you. [Nothing] shows you the progress.",
+              "body": "Say why the effort stays invisible."
+            }
+          }
+        },
+        "proof": {
+          "headline": "People like you fix this [in a week].",
+          "body": "One true, specific line of proof."
+        },
+        "recap": {
+          "headline": "How this works for you"
+        },
+        "account": {
+          "headline": "Your plan is ready. [Save it] to see your price.",
+          "note": ""
+        },
+        "paywall": {
+          "headline": "Unlock [all of Appname]."
+        },
+        "checkout": {
+          "headline": "Payment details."
+        }
+      },
+      "recap": {
+        "closing": "Appname gives you [the outcome] every day.",
+        "answers": [
+          "The first thing it does",
+          "The second thing it does",
+          "Where it works"
+        ]
+      },
+      "paywall": {
+        "pros": [
+          "The first thing it does",
+          "The second thing it does",
+          "Where it works"
+        ],
+        "monthly": "Monthly",
+        "yearly": "Yearly",
+        "lifetime": "Lifetime",
+        "perMonth": "/ month",
+        "perYear": "/ year",
+        "perDay": "per day",
+        "once": "once",
+        "cancelAnytime": "Cancel anytime",
+        "billedYearly": "Billed once a year",
+        "save": "Save {percent}",
+        "forever": "Pay once. Yours forever.",
+        "lifetimeLeft": "",
+        "weekly": "",
+        "guarantee": "30-day money-back guarantee, no questions asked.",
+        "continue": "Continue"
+      },
+      "account": {
+        "signIn": "Sign in",
+        "haveAccount": "Already have an account? Sign in",
+        "fix": {
+          "time": "The hours handed back, every week.",
+          "money": "Every cost in plain sight.",
+          "stress": "One place that remembers for you.",
+          "progress": "Progress you can see at a glance."
+        }
+      }
+    }
+  }
+}

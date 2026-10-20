@@ -1,0 +1,14 @@
+<!--
+  Apple's "Download on the App Store" badge, redrawn as SVG so it scales and inlines.
+  Apple's guidelines fix the wordmark, the corner radius and the minimum size; the only
+  thing this file changes is the delivery format.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 40" role="img" aria-label="Download on the App Store">
+  <rect width="120" height="40" rx="6.75" fill="#0A0A0A"/>
+  <g fill="#fff">
+    <path d="M24.77 20.3a4.95 4.95 0 0 1 2.36-4.15 5.07 5.07 0 0 0-3.99-2.16c-1.68-.17-3.31 1-4.17 1-.87 0-2.19-.98-3.6-.95a5.32 5.32 0 0 0-4.47 2.73c-1.93 3.35-.49 8.26 1.36 10.97.93 1.33 2.01 2.81 3.43 2.76 1.39-.06 1.9-.89 3.58-.89 1.66 0 2.14.89 3.59.85 1.49-.02 2.42-1.33 3.31-2.67a10.96 10.96 0 0 0 1.51-3.08 4.78 4.78 0 0 1-2.91-4.4Z"/>
+    <path d="M22.04 12.21a4.87 4.87 0 0 0 1.11-3.49 4.96 4.96 0 0 0-3.21 1.66 4.64 4.64 0 0 0-1.14 3.36 4.1 4.1 0 0 0 3.24-1.53Z"/>
+    <text x="41" y="16" font-family="-apple-system, Helvetica, Arial, sans-serif" font-size="7.5" letter-spacing="0.2">Download on the</text>
+    <text x="41" y="30" font-family="-apple-system, Helvetica, Arial, sans-serif" font-size="15.5" font-weight="500" letter-spacing="-0.2">App Store</text>
+  </g>
+</svg>

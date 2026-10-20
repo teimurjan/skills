@@ -1,0 +1,6 @@
+# The one JSX bun ever compiles in this repo is the web funnel, which is Preact:
+# `scripts/build-funnel.tsx` renders `components/funnel/**` to HTML under the bun runtime,
+# and `Bun.build` bundles the same files for the browser. Next compiles the React pages
+# with its own toolchain and never reads this file. `tsconfig.funnel.json` is the
+# typechecker's copy of the same setting.
+jsxImportSource = "preact"

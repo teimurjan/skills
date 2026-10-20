@@ -1,0 +1,30 @@
+# Everything about a deliver run that never varies.
+#
+# It lives here rather than in the menu's argv so that a bare `fastlane deliver`
+# run from appstore/ behaves identically to going through `bun run appstore:menu`.
+# The menu passes only what actually changes: --app_version, --api_key_path, and
+# which half of the payload to skip.
+#
+# Paths are relative to the directory fastlane is invoked from, which is always
+# appstore/ — the menu sets cwd, and by hand you are already standing here.
+
+metadata_path "./metadata"
+screenshots_path "./screenshots"
+
+# This tool moves text and screenshots. Builds go up through Xcode or TestFlight,
+# and letting deliver near a binary would make an innocent metadata typo fix into
+# a release.
+skip_binary_upload true
+
+# `force` skips deliver's interactive HTML preview, not any validation. The menu
+# prints what is about to change and asks for confirmation before it gets here,
+# and a browser popup in the middle of a prompt-driven flow just strands the run.
+force true
+
+# The generated set is authoritative, not additive. Without this, re-running a
+# screenshot push appends a second copy of every frame to the version.
+overwrite_screenshots true
+
+# The IAP descriptions are edited in App Store Connect, not from this folder, so
+# they should not gate a metadata push.
+precheck_include_in_app_purchases false

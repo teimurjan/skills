@@ -1,0 +1,11 @@
+# Which app every deliver run in this folder targets.
+#
+# `app_identifier` is not optional here even though it usually is: deliver normally reads
+# it out of the .ipa, and this setup never uploads a binary, so there is no .ipa to read.
+# Same reason the menu always passes --app_version explicitly.
+#
+# No `apple_id` and no team ids: authentication is an App Store Connect API key (see
+# Deliverfile), which already carries the issuer, so there is no account email to log in
+# as and no team to disambiguate.
+
+app_identifier "com.example.appname"

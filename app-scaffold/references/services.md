@@ -85,7 +85,7 @@ days. Submit it as soon as the site has live Privacy, Terms and Refund pages and
 - Add the domain, then add its DNS records (SPF, DKIM, return-path) at the registrar and verify.
 - API key (sending access) → `RESEND_API_KEY`. `RESEND_FROM="<Name> <hello@<apex>>"`.
 - `EMAIL_POSTAL_ADDRESS` (CAN-SPAM footer; nothing sends without it) → ENV.
-- Paddle only: the abandoned-checkout cron needs `CRON_SECRET` (any long random string) → ENV.
+- The abandoned-checkout cron needs `CRON_SECRET` (any long random string) → ENV.
   `vercel.json` schedules it every 15 minutes.
 
 ## 7. Analytics + ads

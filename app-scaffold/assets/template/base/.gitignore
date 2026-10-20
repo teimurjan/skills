@@ -1,0 +1,68 @@
+node_modules
+dist
+.next
+next-env.d.ts
+
+# The web funnel's prerendered output. `bun run funnel:build` regenerates it before every
+# `next build` and `bun run dev` rebuilds it on every edit, deterministically from
+# `components/funnel/**`, so it is build output rather than source.
+public/funnel/
+tsconfig.tsbuildinfo
+.env
+.env*.local
+.env.sandbox
+.env.mcp
+*.local
+.DS_Store
+
+# App Store screenshot generator: downloaded font cache + xcodebuild DerivedData
+appstore/.cache/
+
+# App Store Connect API key for `fastlane deliver` (see appstore/fastlane/Deliverfile).
+# Not the APPLE_INAPP_* key in .env — that one is for the App Store Server API.
+# Both forms: the .p8 Apple hands you once, and the JSON the menu builds from it.
+appstore/fastlane/*.p8
+appstore/fastlane/*.json
+
+# What App Store Connect currently holds, pulled down to diff against. Never the live
+# tree: deliver's downloads overwrite rather than merge, so a pull aimed at the real
+# folder reverts every local edit not yet uploaded.
+appstore/.download/
+
+# Supabase CLI cache
+supabase/.temp/
+
+# Vercel CLI link state (`vercel link` / `vercel pull`)
+.vercel
+
+# Xcode per-user state
+xcuserdata/
+*.xcuserstate
+
+# iOS local dev env (machine-specific LAN URL); copy from Local.xcconfig.example
+ios/Config/Local.xcconfig
+
+# Simulator captures. Only the Mac that took them can make them, and only that Mac reads them
+# (screenshots:composite, deliver), so they stay on its disk: every recapture rewrites one PNG per frame and slot
+# and they were most of the repository's history. `frame.png` beside them is an input and stays.
+appstore/source/*/
+
+# Composited store frames. They are build output: `bun run screenshots:composite` rebuilds
+# every one of them from the captures in appstore/source/ plus appstore/captions/,
+# deterministically.
+#
+# The site does not read them: the same run writes a downscaled WebP set to
+# `public/screenshots/<locale>` (356 kB for every locale, against 10 MB here), and *that*
+# is committed, because the deploy runner has no captures to composite from. So a caption
+# tweak rewrites two small files in the tree instead of a dozen large ones.
+appstore/screenshots/
+
+# Header and search-result creative assets. Build output of `bun run creatives:render`,
+# pushed by `bun run creatives:push`, ~2.5 MB each, per locale.
+appstore/creatives/
+
+.claude/settings.local.json
+.playwright-mcp
+
+# appname-shorts skill workspace: footage, scene library and rendered shorts. Large binaries, never history.
+shorts/

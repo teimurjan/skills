@@ -1,0 +1,32 @@
+// Production backend. Selected by the Release configuration (App Store archives), and
+// included by Debug.xcconfig, which reuses all of it but blanks the Amplitude key. Every
+// value here is client-safe (it ships inside the app binary) — real secrets stay
+// server-side in the Next.js app's own env and never touch the app.
+//
+// `$()` expands to empty. It exists only to split the `//` in a URL, which xcconfig would
+// otherwise treat as a line comment. The resolved value is the plain URL.
+
+// Origin only — every call site appends its own `api/…` path.
+API_BASE_URL = https:/$()/appname.example
+APP_ENVIRONMENT = production
+
+// Supabase Auth — same project as Local; only the API host differs between
+// configurations. The publishable key is client-safe by design; the secret key lives only
+// in the Next.js app's env.
+//
+// Fill these in from the Supabase dashboard after `supabase link`. Left blank here rather
+// than committed with a placeholder that looks real: `AppConfig.isSupabaseConfigured`
+// reads blank as "sign-in not set up", which is a legible state, while a wrong key is a
+// 401 nobody can explain.
+SUPABASE_URL = https:/$()/
+SUPABASE_PUBLISHABLE_KEY =
+
+// Amplitude write key for the Appname project. Client-safe (it is a write-only ingest key),
+// and blank in Debug/Local so Xcode runs never reach the production project — `Analytics`
+// no-ops on an empty key.
+AMPLITUDE_API_KEY =
+
+// Google Sign-In. The bare client id, without the `.apps.googleusercontent.com` suffix —
+// Info.plist appends it for `GIDClientID` and reverses it for the callback URL scheme, so
+// the two spellings cannot disagree. Client-safe: an iOS OAuth client has no secret.
+GOOGLE_IOS_CLIENT_ID =

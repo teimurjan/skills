@@ -5,9 +5,9 @@
 ## Architecture
 
 Root is the Next.js backend (API, payments, marketing site, web funnel). The SwiftUI app lives in
-`ios/` and the store-listing pipeline in `appstore/`. Scaffolded from Printyard (`~/Projects/takt`),
-with the screenshot scripts from Oyno (`~/Projects/oyno`); when a pattern is missing here, look
-there before inventing one.
+`ios/` and the store-listing pipeline in `appstore/`. Scaffolded from the app-scaffold skill's
+template (`~/.claude/skills/app-scaffold/assets/template`). If a pattern is missing here, look
+there before you invent one.
 
 **No free tier, and the wall is on writing, not reading.** Everything already on the device opens
 for free. Adding to it needs a live entitlement. The gate is `requireEntitlement()` inside
@@ -37,6 +37,14 @@ caller of `isPaid` learns there is more than one.
   failed write).
 - A failed entitlement read throws and returns 500. It is never "unpaid".
 - Nothing above the paywall step imports the biller SDK.
+- `lib/biller.ts` names the biller for the legal pages and lists its public env names.
+
+## Emails
+
+Resend sends two (`lib/checkoutReminder/`, `lib/welcomeEmail/`). The cron in `vercel.json` sends
+one reminder, ever, an hour after the last checkout of an unpaid account. It carries a single-use
+20% code, and `discount.ts` says how the biller takes it. A new web purchase gets the welcome email from
+the webhook. Both are written in the language the checkout was read in.
 
 ## Data access
 
@@ -63,9 +71,9 @@ The emails are `supabase/templates/`, one file per tab in Authentication → Ema
 - `email_change`: "Confirm your new <Name> email"
 - `invite`: "You’ve been invited to <Name>"
 
-## Language and currency
+## Language
 
-Two independent choices. The locale list is the same in three places
+The locale list is the same in three places
 (`InterfaceLanguage.supported`, `LOCALES` in `lib/i18n.ts`, `LOCALES` in
 `appstore/scripts/lib/locales.mjs`), and every tag has a site deck and a funnel deck. Use
 `String(interface:)`, never `String(localized:)`. `bun run strings:check` fails on a single

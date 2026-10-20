@@ -7,13 +7,10 @@ no RevenueCat.
 
 ## Project
 - `project.pbxproj` is **hand-authored**, with placeholder ids (`5C…`) and file-system-synchronized
-  groups, so adding a Swift file never touches it. The scaffold already renamed targets, schemes,
-  bundle ids, `TEST_HOST` and the entitlements path.
-- Still to do by hand in the pbxproj:
-  - Remove the reference app's usage strings (`INFOPLIST_KEY_NS…UsageDescription`: camera, NFC)
-    unless the new app needs them.
-  - Set `MARKETING_VERSION = 1.0` and `CURRENT_PROJECT_VERSION = 1`.
-  - Trim `knownRegions` to the locales.
+  groups, so adding a Swift file never touches it. The scaffold renames targets, schemes, bundle
+  ids, `TEST_HOST` and the entitlements path.
+- The template's pbxproj carries no usage strings (`INFOPLIST_KEY_NS…UsageDescription`). Add one
+  only with the feature that needs it. `knownRegions` lists `en` and `Base`. Add each locale.
 - `DEVELOPMENT_TEAM` is the user's team and stays.
 - Adding a package means writing four entries with unused `5C…` ids: `packageReferences`,
   `packageProductDependencies`, an `XCSwiftPackageProductDependency` and a `PBXBuildFile`.
@@ -25,7 +22,7 @@ no RevenueCat.
 `API_BASE_URL` (origin, written `https:/$()/host`), `APP_ENVIRONMENT`, `SUPABASE_URL`,
 `SUPABASE_PUBLISHABLE_KEY`, `AMPLITUDE_API_KEY` and `GOOGLE_IOS_CLIENT_ID` (bare id).
 
-Info.plist builds `GIDClientID` and the reversed URL scheme from `GOOGLE_IOS_CLIENT_ID`; no code
+Info.plist builds `GIDClientID` and the reversed URL scheme from `GOOGLE_IOS_CLIENT_ID`. No code
 configures Google. A missing `API_BASE_URL` is a fatalError. Blank Supabase or Amplitude values
 are "not configured".
 
@@ -37,13 +34,13 @@ are "not configured".
 5. `PaywallScreen(context: .onboarding)`.
 6. Main.
 
-Every gate keys on `@AppStorage("<slug>.didOnboard")`, set when main first appears, so a lapsed
-subscription never walls the launch screen.
+When main first appears, it sets `@AppStorage("<slug>.didOnboard")`, and every gate keys on it. So a
+lapsed subscription never walls the launch screen.
 
 - **Reads are free and writes are gated** in one store: `requireEntitlement() -> Bool`
   increments `refusedActions` (a counter, so a second refusal fires `onChange` again). `AppRoot`
   presents the paywall as a `fullScreenCover` with `context: .writeBlocked`, never a sheet.
-- To let the app be judged before paying, the first instance of the core action may be free while
+- To let the app be judged before paying, the first instance of the core action can be free while
   its setup step is open.
 - Sign-out calls `PurchaseStore.forgetAccount()`. Sign-in calls `reconcileLocalEntitlement()`, which
   pushes local StoreKit transactions under the new uid.
@@ -54,7 +51,7 @@ subscription never walls the launch screen.
   authorization with no callback.
 - **Google**: `GIDSignIn`, then the `id_token` grant.
 - **Facebook**: GoTrue `/authorize` in `webAuthenticationSession` with PKCE and
-  `<slug>://auth-callback` (in Supabase redirect URLs; no URL type needed).
+  `<slug>://auth-callback` (in Supabase redirect URLs, with no URL type needed).
 - **Email OTP**: `/otp` then `/verify`.
 - **Password**: sign-in only, which is what App Review's demo account uses.
 - Button order is Facebook, Apple, Google, then the email code. The brand buttons follow each
@@ -86,44 +83,44 @@ subscription never walls the launch screen.
 - `Typeface`: fonts registered at runtime, with `assertFontsResolve()` guarding PostScript names.
 - `Screen` + `SwipeBackGesture` (a hidden nav bar disables edge-swipe) and `keyboardDismissBar`
   (`.decimalPad` has no return key).
-- `ScreenshotHarness` (`#if DEBUG`, `--screenshot <name>`, seeded fixtures). Port three parts
-  of Oyno's version:
-  - It draws a tab's screen inside `RootTabs`, on the tab that the screen belongs to, so the frames
-    show the tab bar as the app ships it. A screen that covers the tabs (the first run, a modal
-    flow) draws without them. The map is `tab(for:)`.
-  - A fixture that reads the clock takes a fixed date, so a capture shows the same state at any
-    hour. Oyno uses the latest Thursday at 5:15 PM.
-  - To check another device's layout from one simulator, launch with `--window 951x669` (a
-    window of that size), `--bars side` (the Duo's side bar) and `--idiom phone|pad`.
+- `ScreenshotHarness` (`#if DEBUG`, `--screenshot <name>`, seeded fixtures). The template draws
+  `splash`, `signin`, `home`, `profile` and `paywall`. As the app grows:
+  - When the app has tabs, draw a tab's screen inside the same tab view the app uses, on the tab
+    the screen belongs to, so the frames show the tab bar as the app ships it. A screen that covers
+    the tabs (the first run, a modal flow) draws without them.
+  - Give a fixture that reads the clock a fixed date, so a capture shows the same state at any
+    hour.
+  - To check another device's layout from one simulator, add launch flags for a window size, the
+    bar placement and the idiom.
 - `ProfileScreen`: language picker, manage subscription, sign out, **delete account** (guideline
   5.1.1(v), `DELETE /api/account`).
 
 ## iPad and iPhone Duo
-If the intake chose more than the iPhone, do this section. Port the files from
-`~/Projects/oyno/ios/Oyno/` by hand. The scaffold does not copy them, because they use parts of
-Oyno's design system that takt does not have.
+If the intake chose more than the iPhone, do this section. The template ships iPhone only, so these
+pieces are written for the app.
 
 1. In the pbxproj, set `TARGETED_DEVICE_FAMILY = "1,2"` in every target and configuration. Replace
    `INFOPLIST_KEY_UISupportedInterfaceOrientations` with an `_iPhone` key (`Portrait`,
    `LandscapeLeft`, `LandscapeRight`) and an `_iPad` key (all four).
-2. Port `App/OrientationLock.swift` and attach it in the `App` with `@UIApplicationDelegateAdaptor`.
+2. Write `App/OrientationLock.swift`, an app delegate attached with `@UIApplicationDelegateAdaptor`.
    It keeps a tall phone upright and lets the Duo and iPad turn.
-3. Port `Shared/DesignSystem/Adaptive.swift` and add `Metric.fold` (40) and `Metric.readableWidth`
-   (600). The root reads the window once with `.adaptiveLayout()`. Every screen reads
-   `@Environment(\.adaptive)`: `columns` is `.one`, `.two` or `.rows`, and `bars` is `.inline`,
-   `.top` or `.side`. Port `OynoTests/AdaptiveTests.swift` with it. It pins each window size the
-   design draws to its layout.
+3. Write `Shared/DesignSystem/Adaptive.swift` and add `Metric.fold` (40) and `Metric.readableWidth`
+   (600). The root reads the window once with `.adaptiveLayout()`, and every screen reads
+   `@Environment(\.adaptive)`:
+   - `columns` is `.one`, `.two` or `.rows`.
+   - `bars` is `.inline`, `.top` or `.side`.
+   - `roomy` is true for a window 1000pt or wider.
+   Add `AdaptiveTests.swift`, which pins each window size the design draws to its layout.
 4. Give each screen a layout per `adaptive.columns`:
    - `FoldColumns` splits at the window's center, which is the Duo's fold. Nothing to tap goes in
      the fold. `FoldRows` does the same for an upright wide window.
-   - `Screen` caps its column with `.readableWidth()` and calls `.systemBar(adaptive)` in place
-     of hiding the navigation bar.
-   - If `adaptive.barsAreSystem` is true, the header's buttons move into the toolbar as
-     `BarButton` (Oyno's `Controls.swift`).
-   - `adaptive.roomy` (a window 1000pt or wider) sets type and controls one size up.
-5. Port `App/RootTabs.swift`, the tab view of both `AppRoot` and `ScreenshotHarness`. The system
+   - `Screen` caps its column with `.readableWidth()` and shows the system navigation bar where
+     `bars` says, in place of hiding it.
+   - When the system bar shows, the header's buttons move into the toolbar.
+   - When `roomy` is true, type and controls go one size up.
+5. Write `App/RootTabs.swift`, the tab view of both `AppRoot` and `ScreenshotHarness`. The system
    tabs drop the names on iPad and the icons in the Duo's side bar. So `RootTabs` hides the system
-   tab bar there and floats its own, which needs `floatingGlass()` from Oyno's `Card.swift`.
+   tab bar there and floats its own.
 
 ## Build gate
 ```bash
@@ -134,7 +131,8 @@ xcodebuild -project ios/<Target>.xcodeproj -scheme <Target> -configuration Relea
 ```
 
 ## Before the first archive
-- The app icon is an Icon Composer `AppIcon.icon` (not copied; make it from the design).
+- The app icon is an Icon Composer `AppIcon.icon`, made from the design. The template's
+  `AppIcon` image set is a placeholder.
 - `PrivacyInfo.xcprivacy` is trimmed to what the app collects, and matches the App Privacy label.
 - `ITSAppUsesNonExemptEncryption = NO`.
 - Upload through Xcode Organizer. fastlane never ships binaries.

@@ -1,0 +1,48 @@
+name: Deploy to Vercel
+
+# Manual deploy to the Vercel production environment. Uses a Vercel token, so it does not
+# depend on any locally logged-in account.
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: Vercel environment to deploy to.
+        type: choice
+        options:
+          - production
+        default: production
+        required: true
+
+concurrency:
+  group: deploy-${{ inputs.target }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_ORG_ID: ${{ vars.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ vars.VERCEL_PROJECT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install Vercel CLI
+        run: bun add -g vercel@latest
+
+      - name: Pull Vercel environment
+        run: vercel pull --yes --environment=${{ inputs.target }} --token=${{ secrets.VERCEL_TOKEN }}
+
+      # build/deploy take --target=<slug>; production is just another target slug.
+      - name: Build
+        run: vercel build --target=${{ inputs.target }} --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy
+        run: |
+          url=$(vercel deploy --prebuilt --target=${{ inputs.target }} --token=${{ secrets.VERCEL_TOKEN }})
+          echo "Deployed to $url"
+          echo "### Deployed ${{ inputs.target }} :rocket:" >> "$GITHUB_STEP_SUMMARY"
+          echo "[$url]($url)" >> "$GITHUB_STEP_SUMMARY"

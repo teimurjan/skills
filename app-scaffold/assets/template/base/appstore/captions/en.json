@@ -1,0 +1,19 @@
+{
+  "default": [
+    {
+      "slug": "home",
+      "source": "01",
+      "caption": "Lead with [the outcome]"
+    },
+    {
+      "slug": "paywall",
+      "source": "02",
+      "caption": "Name the outcome, [then the price]"
+    },
+    {
+      "slug": "profile",
+      "source": "03",
+      "caption": "One claim, [one proof]"
+    }
+  ]
+}

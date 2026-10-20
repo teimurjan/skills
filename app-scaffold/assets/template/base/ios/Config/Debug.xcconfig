@@ -1,0 +1,14 @@
+// Production backend, analytics off. Selected by the `Appname` scheme's Debug (Run)
+// configuration — the one you get every time you hit Run.
+//
+// It inherits everything from Production.xcconfig and blanks only the Amplitude key: an
+// empty key keeps `Analytics` a no-op, so Xcode runs never reach the production Amplitude
+// project. Release (Archive → App Store and TestFlight) uses Production.xcconfig directly
+// and keeps the key.
+//
+// To run against a `bun run dev` server on your Mac instead, switch to the `Appname (Local)`
+// scheme, which builds the Debug-Local configuration off Local.xcconfig.
+
+#include "Production.xcconfig"
+
+AMPLITUDE_API_KEY =

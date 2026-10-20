@@ -1,0 +1,27 @@
+// On-device dev against a local `bun run dev` server. Selected by the `Appname (Local)`
+// scheme's Debug-Local configuration; hitting Run on the plain `Appname` scheme uses
+// Debug.xcconfig and the production backend instead. Machine-specific, so the real file is
+// gitignored:
+//
+//   cp ios/Config/Local.xcconfig.example ios/Config/Local.xcconfig
+//
+// The Simulator shares the Mac's network stack, so `localhost` reaches a `bun run dev`
+// server directly — no LAN IP needed. Testing on a physical device does need your Mac's
+// LAN address instead (the phone must reach it), e.g. http://192.168.1.20:7071.
+
+API_BASE_URL = http:/$()/localhost:7071
+APP_ENVIRONMENT = local
+
+// Supabase Auth — same project as production; only the API host differs between
+// configurations. The publishable key is client-safe by design.
+SUPABASE_URL = https:/$()/
+SUPABASE_PUBLISHABLE_KEY =
+
+// Left blank on purpose: an empty key keeps `Analytics` a no-op, so nothing you do on a
+// Debug build lands in the production Amplitude project.
+AMPLITUDE_API_KEY =
+
+// Google Sign-In. The bare client id, without the `.apps.googleusercontent.com` suffix —
+// Info.plist appends it for `GIDClientID` and reverses it for the callback URL scheme, so
+// the two spellings cannot disagree. Client-safe: an iOS OAuth client has no secret.
+GOOGLE_IOS_CLIENT_ID =

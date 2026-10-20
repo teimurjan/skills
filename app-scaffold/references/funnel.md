@@ -21,9 +21,11 @@ say it in their own answers, read it back, then save the plan and show the price
   hydration). `?step=N` handles the return from OAuth or an email.
 
 ## Step kinds
-`question` (single auto-advances after 180 ms, `multi` keeps Continue), statement (any kind
-without a component renders `StatementStep`: headline, body, note, `variants` keyed on an earlier
-answer), widget (a kind registered in `DEMOS`), `recap`, `account`, `paywall`, `checkout`.
+The kinds are `question`, `statement`, widget, `recap`, `account`, `paywall` and `checkout`.
+- `question`: a single answer auto-advances after 180 ms, and `multi` keeps Continue.
+- `statement`: drawn by `StatementStep` with a headline, body, note and `variants` keyed on an
+  earlier answer.
+- Widget: a kind registered in `DEMOS`, which is empty in the template.
 
 Ids, question keys and option values are never translated: they are analytics, `sessionStorage`
 and biller metadata. Words live in `copy/<tag>.ts` keyed by those ids. `[brackets]` mark the one
@@ -32,7 +34,7 @@ accent span and `{name}` is a placeholder.
 **Add a question:**
 1. `question(key, [[value, emoji], …], multi?)`.
 2. An entry in `FUNNEL.steps`.
-3. Its id in `WEB_ORDER`.
+3. Nothing for the web: `WEB_ORDER` follows `FUNNEL` until the web needs another order.
 4. `questions.<key>` (headline, options, `recap`) in every deck.
 5. A recap icon in `RecapStep.ICONS`.
 6. `bun run funnel:export-ios`.
@@ -89,10 +91,19 @@ accent span and `{name}` is a placeholder.
   `aria-valuenow` carries the true step.
 - **Prewarm** the paywall and checkout chunks and the price on the first idle after the first
   answer (`prewarm.ts`).
+- **Preload the checkout behind the plans.** `FunnelShell` mounts `CheckoutStep` from the paywall
+  on, as a sibling of the re-keyed step, so Continue reveals a frame that is already loaded.
+  Re-keying it would reload the biller's iframe. The template's `FunnelShell.tsx` does this.
+  - On the paywall, wrap it `invisible absolute h-0 overflow-hidden` at the checkout's width, with
+    `inert` and `aria-hidden`. `display: none` lays the frame out at zero width.
+  - It gets `visible`. `InitiateCheckout` and `checkout_started` wait for it, or every paywall
+    view counts as a checkout.
+  - The abandoned-checkout reminder is ours, so keep the biller's own recovery off. On Dodo it is
+    timed from the session mint, so with the preload the hour starts at the paywall, not at Continue.
 - **In-app browsers** (FB/IG/Threads UA): hide Google (it fails with `disallowed_useragent`). The
   emailed code is the path that works everywhere.
 - Hand-written proof numbers ("1,457 joined", "51 of 200 left") are representations to a buyer,
-  so keep them true in every deck.
+  so keep them true in every deck. The template leaves them empty, and an empty line draws nothing.
 - `steps.ts` `FUNNEL` is the app's order and `WEB_ORDER` the web's. Keep them equal unless the web
   traffic is pre-qualified by the ad.
 
