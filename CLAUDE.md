@@ -24,22 +24,32 @@ Authored skills:
 - **browser-testing** - ABP (Agent Browser Protocol) CLI wrapper in Deno (`browser.js`). Has npm deps for Readability/Markdown extraction (`@mozilla/readability`, `jsdom`, `turndown`).
 - **address-pr-review** - Fetches and addresses GitHub PR review comments. Pure markdown, no runtime code.
 - **perf-engineering** - CPU/memory optimization guidance. Pure markdown, no runtime code.
-- **ux-laws-audit** - Audits a UI against the Laws of UX. Markdown with `references/`, `assets/`, and `evals/`.
-- **app-scaffold** - Scaffolds an iOS app + landing + web funnel from the user's reference repos. Markdown with `references/`, `assets/`, and a Bun script (`scripts/scaffold.ts`) that copies from the references' git `HEAD`.
+- **app-scaffold** - Scaffolds an iOS app + landing + web funnel from the user's reference repos. Markdown with `references/`, `assets/`, and a Bun script (`scripts/scaffold.ts`) that copies from the references' git `HEAD`. `aso/` links to the vendored vibe-aso skill.
 
 Vendored skills:
 
 - **skill-creator** - `anthropics/skills`
 - **grilling**, **wait-what** - `mattpocock/skills`
 - **simple-english** - `AminBlg/SimpleEnglish`; its plugin hooks are merged into agent settings by `scripts/install.sh`
+- **vibe-aso** - `Kronop/vibe-aso`; linked as `app-scaffold/aso`, not as a top-level skill
 
-## Code Graph
+## Recommended Global Tools
 
-Code-graph analysis is an external tool, not a skill. Install it with:
+These tools are not skills in this repo. Install them once, globally, for all projects.
 
-```sh
-curl -fsSL https://raw.githubusercontent.com/colbymchenry/codegraph/main/install.sh | sh
-```
+- [codegraph](https://github.com/colbymchenry/codegraph) gives agents a code graph of the project:
+
+  ```sh
+  curl -fsSL https://raw.githubusercontent.com/colbymchenry/codegraph/main/install.sh | sh
+  ```
+
+- [Impeccable](https://impeccable.style/) gives agents design commands and a hook that catches generic AI UI patterns. If the installer asks for a scope, choose all projects:
+
+  ```sh
+  npx impeccable install
+  ```
+
+  To use it in a project, run `/impeccable init` and `/impeccable hooks on` in the agent chat.
 
 ## Skill Anatomy
 
@@ -47,7 +57,7 @@ A `SKILL.md` has YAML frontmatter (`name`, `description`) followed by markdown i
 
 ## Conventions
 
-- Skills are referenced by directory name, such as `browser-testing` or `ux-laws-audit`.
+- Skills are referenced by directory name, such as `browser-testing` or `perf-engineering`.
 - Vendored skills are updated via `git submodule update --remote --recursive`; do not edit them in place.
 - Keep skill instructions agent-neutral unless a capability is truly agent-specific.
 - Update `README.md` in the same change whenever a skill, setup step, or script option is added, removed, or renamed.

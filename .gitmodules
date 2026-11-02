@@ -7,3 +7,6 @@
 [submodule ".vendor/simple-english"]
 	path = .vendor/simple-english
 	url = https://github.com/AminBlg/SimpleEnglish
+[submodule ".vendor/vibe-aso"]
+	path = .vendor/vibe-aso
+	url = https://github.com/Kronop/vibe-aso

@@ -1,6 +1,6 @@
 ---
 name: app-scaffold
-description: Scaffold a new paid iOS app, landing site and Preact web funnel from a bundled template. The stack is Next.js on Vercel, Supabase auth and entitlements, StoreKit 2 in the app, and Dodo or Paddle on the web. Resend sends an abandoned-checkout reminder with a discount and a welcome email. It also has Amplitude, Meta CAPI, fastlane, xcstrings translations and a multi-step pain-point funnel, with the visual design requested from Claude Design. When the user wants to start a new app, product, MVP, side project or subscription app, use it. If the user does not say "scaffold", use it all the same.
+description: Scaffold a new paid iOS app, landing site and Preact web funnel from a bundled template. The stack is Next.js on Vercel, Supabase auth and entitlements, StoreKit 2 in the app, and Dodo or Paddle on the web. Resend sends an abandoned-checkout reminder with a discount and a welcome email. It also has Amplitude, Meta CAPI, fastlane, xcstrings translations, keyword research and localized App Store metadata (vibe-aso), and a multi-step pain-point funnel, with the visual design requested from Claude Design. When the user wants to start a new app, product, MVP, side project or subscription app, use it. If the user does not say "scaffold", use it all the same.
 ---
 
 # App scaffold
@@ -137,6 +137,14 @@ the project `CLAUDE.md` Sign-in section. The user pastes them in Phase 7.
 - Locales: the same list in three places (`InterfaceLanguage.supported`, `lib/i18n.ts` `LOCALES`,
   `appstore/scripts/lib/locales.mjs`), each with a site deck, funnel deck, email deck rows, xcstrings
   language and metadata folder. `bun run strings:check` is the gate.
+- ASO: `aso/` is the vendored vibe-aso skill. Read `aso/SKILL.md` and do its Phase 0 setup. Then
+  do its phases 1 (keywords), 2 (metadata), 4 (pricing) and 6 (submission), and read each phase's
+  `aso/reference/*.md` first. Give it the launch locales from Phase 0, so that it does not ask again.
+  It writes metadata to `appstore/metadata/<asc-locale>/`, not `fastlane/metadata/`, and
+  `bun run metadata:check` must pass after its own checks. Skip its phases 3 and 5, because the
+  template captures screenshots and syncs strings itself. Use its translation rules and detector
+  checks on `appstore/captions/` and the xcstrings catalogue. Its prices are for the App Store only.
+  The biller's prices stay as they are, but yearly stays below lifetime on both.
 - App Store: `references/appstore.md`. Plan the frames before you capture. For each caption, pick
   the screen. If the proof is small on the phone, also pick the widget to zoom. Tag those widgets with
   `.screenshotCallout(id)`. Trim `DEVICES` in `screenshot-kit.mjs` to the slots the app ships.

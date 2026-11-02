@@ -11,14 +11,14 @@ Authored here:
 - **browser-testing** - browser automation via the Agent Browser Protocol.
 - **address-pr-review** - fetch and address GitHub PR review comments.
 - **perf-engineering** - CPU/memory optimization guidance.
-- **ux-laws-audit** - audit a UI (web or mobile) against the Laws of UX and produce a prioritized, actionable fix report.
-- **app-scaffold** - scaffold a paid iOS app, landing site and Preact pain-point funnel (Next.js on Vercel, Supabase, StoreKit + Paddle or Dodo, Resend, fastlane) by copying the generic half of `~/Projects/takt`, `~/Projects/wait-professor` and the App Store screenshot scripts of `~/Projects/oyno` (zoomed widgets, photo frames, iPad and iPhone Duo slots), with the design requested from Claude Design. Needs `bun` and all three reference repos checked out.
+- **app-scaffold** - scaffold a paid iOS app, landing site and Preact pain-point funnel (Next.js on Vercel, Supabase, StoreKit + Paddle or Dodo, Resend, fastlane) by copying the generic half of `~/Projects/takt`, `~/Projects/wait-professor` and the App Store screenshot scripts of `~/Projects/oyno` (zoomed widgets, photo frames, iPad and iPhone Duo slots), with the design requested from Claude Design. Keyword research, localized metadata and territory pricing come from the vendored vibe-aso skill, linked as `app-scaffold/aso`. Needs `bun` and all three reference repos checked out.
 
 Vendored as submodules in `.vendor/` and symlinked at the repo root:
 
 - **skill-creator** - anthropics/skills
 - **grilling**, **wait-what** - mattpocock/skills
 - **simple-english** - AminBlg/SimpleEnglish
+- **vibe-aso** - Kronop/vibe-aso, linked inside `app-scaffold/aso` rather than at the repo root
 
 ## Setup
 
@@ -86,10 +86,20 @@ scripts/install.sh --prune
 scripts/                # Repo maintenance helpers
 ```
 
-## Code Graph
+## Recommended Global Tools
 
-Code-graph analysis is a separate tool:
+These tools are not skills in this repo. Install them once, globally, for all projects.
 
-```sh
-curl -fsSL https://raw.githubusercontent.com/colbymchenry/codegraph/main/install.sh | sh
-```
+- [codegraph](https://github.com/colbymchenry/codegraph) gives agents a code graph of the project:
+
+  ```sh
+  curl -fsSL https://raw.githubusercontent.com/colbymchenry/codegraph/main/install.sh | sh
+  ```
+
+- [Impeccable](https://impeccable.style/) gives agents design commands and a hook that catches generic AI UI patterns. If the installer asks for a scope, choose all projects:
+
+  ```sh
+  npx impeccable install
+  ```
+
+  To use it in a project, run `/impeccable init` and `/impeccable hooks on` in the agent chat.

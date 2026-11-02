@@ -8,7 +8,8 @@
 - For iPhone Duo frames, a fastlane later than 2.241.0 (fastlane#30444). An older deliver refuses
   the whole upload. The menu checks the version before a push.
 - The ASC API key (App Manager) `.p8` in `appstore/fastlane/`. The menu turns it into
-  `asc-api-key.json` (gitignored) after asking for the Issuer ID.
+  `asc-api-key.json` (gitignored) after asking for the Issuer ID. The ASO phases read the same key
+  from `~/.vibe-aso/`, which their setup writes.
 
 ## Files to edit after the scaffold
 - `appstore/fastlane/Appfile`: `app_identifier` (already renamed). `Deliverfile` copies as-is
@@ -123,8 +124,10 @@ not the catalogue.
 1. Create the ASC record and products (`services.md` §2).
 2. Archive and upload via Xcode Organizer.
 3. Run `strings:sync`, then `strings:check`.
-4. Write the metadata and `review_information`, then `bun run metadata:check`.
+4. Write the metadata with the ASO phases 1–2 (`SKILL.md` Phase 9), then `review_information`, then
+   `bun run metadata:check`.
 5. Capture → composite. Commit `public/screenshots/`.
 6. Menu → Validate (no upload), then push metadata and screenshots.
-7. In ASC, attach the build, then fill in pricing, App Privacy, age rating, the IAPs with their
-   review screenshots, and the subscription group localization. Submit by hand.
+7. Set the territory prices with ASO phase 4. In ASC, attach the build, then fill in App Privacy,
+   age rating, the IAPs with their review screenshots, and the subscription group localization.
+   Walk ASO phase 6's checklist, then submit by hand.
