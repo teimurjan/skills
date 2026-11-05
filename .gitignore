@@ -1,1 +1,4 @@
 .playwright-mcp
+.DS_Store
+.codex/
+.env

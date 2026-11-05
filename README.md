@@ -12,12 +12,15 @@ Authored here:
 - **address-pr-review** - fetch and address GitHub PR review comments.
 - **perf-engineering** - CPU/memory optimization guidance.
 - **app-scaffold** - scaffold a paid iOS app, landing site and Preact pain-point funnel (Next.js on Vercel, Supabase, StoreKit + Paddle or Dodo, Resend, fastlane) by copying the generic half of `~/Projects/takt`, `~/Projects/wait-professor` and the App Store screenshot scripts of `~/Projects/oyno` (zoomed widgets, photo frames, iPad and iPhone Duo slots), with the design requested from Claude Design. Keyword research, localized metadata and territory pricing come from the vendored vibe-aso skill, linked as `app-scaffold/aso`. Needs `bun` and all three reference repos checked out.
+- **google-trends** - search any terms in Google Trends from one stealth Chromium window, and save the trend line, a verdict and the related searches to a JSON file. Needs Node 22.18 or later and `pnpm install` in the skill directory.
+- **keyword-metrics** - get monthly search volume, ad competition and top-of-page bids for any keywords from the Google Ads API. Needs Node 22.18 or later, `pnpm install` in the skill directory, and a developer token with Basic access.
 
 Vendored as submodules in `.vendor/` and symlinked at the repo root:
 
 - **skill-creator** - anthropics/skills
 - **grilling**, **wait-what** - mattpocock/skills
 - **simple-english** - AminBlg/SimpleEnglish
+- **avoid-ai-writing** - conorbronsdon/avoid-ai-writing
 - **vibe-aso** - Kronop/vibe-aso, linked inside `app-scaffold/aso` rather than at the repo root
 
 ## Setup

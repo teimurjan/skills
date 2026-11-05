@@ -10,3 +10,6 @@
 [submodule ".vendor/vibe-aso"]
 	path = .vendor/vibe-aso
 	url = https://github.com/Kronop/vibe-aso
+[submodule ".vendor/avoid-ai-writing"]
+	path = .vendor/avoid-ai-writing
+	url = https://github.com/conorbronsdon/avoid-ai-writing

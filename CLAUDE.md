@@ -25,12 +25,15 @@ Authored skills:
 - **address-pr-review** - Fetches and addresses GitHub PR review comments. Pure markdown, no runtime code.
 - **perf-engineering** - CPU/memory optimization guidance. Pure markdown, no runtime code.
 - **app-scaffold** - Scaffolds an iOS app + landing + web funnel from the user's reference repos. Markdown with `references/`, `assets/`, and a Bun script (`scripts/scaffold.ts`) that copies from the references' git `HEAD`. `aso/` links to the vendored vibe-aso skill.
+- **google-trends** - Google Trends scraper in TypeScript that Node runs directly (`src/cli.ts`). Has npm deps (`cloakbrowser`, `playwright-core`, `commander`, `zod`) and its own `pnpm test`.
+- **keyword-metrics** - Google Ads API client in TypeScript that Node runs directly (`src/cli.ts`). Has npm deps (`commander`, `zod`) and its own `pnpm test`.
 
 Vendored skills:
 
 - **skill-creator** - `anthropics/skills`
 - **grilling**, **wait-what** - `mattpocock/skills`
 - **simple-english** - `AminBlg/SimpleEnglish`; its plugin hooks are merged into agent settings by `scripts/install.sh`
+- **avoid-ai-writing** - `conorbronsdon/avoid-ai-writing`
 - **vibe-aso** - `Kronop/vibe-aso`; linked as `app-scaffold/aso`, not as a top-level skill
 
 ## Recommended Global Tools

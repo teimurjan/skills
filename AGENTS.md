@@ -42,4 +42,6 @@ Add `--prune` to remove links in those directories that point into this repo but
 - `browser-testing` includes a Deno CLI wrapper in `browser.js`.
 - `address-pr-review` and `perf-engineering` are markdown-only skills.
 - `app-scaffold` ships a Bun script (`scripts/scaffold.ts`) that copies from `~/Projects/takt` and `~/Projects/wait-professor` at git `HEAD`; its Claude Design step needs Claude's Artifact tool. `app-scaffold/aso` links to the vendored `Kronop/vibe-aso` skill.
+- `google-trends` ships a TypeScript CLI (`src/cli.ts`) that needs Node 22.18 or later and `pnpm install` in its directory. It keeps its browser profile in `~/.cache/google-trends/profile`.
+- `keyword-metrics` ships a TypeScript CLI (`src/cli.ts`) that needs Node 22.18 or later and `pnpm install` in its directory. It reads credentials from `~/.config/keyword-metrics/credentials.json`.
 - There is no project-wide build step, test suite, or linter.
